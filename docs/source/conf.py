@@ -69,7 +69,7 @@ copyright = u'2020, Clayton W. Seitz'
 # built documents.
 #
 # The short X.Y version.
-version = '0.1'
+version = '0.1gi'
 # The full version, including alpha/beta/rc tags.
 # release = bamboo.__version__
 
