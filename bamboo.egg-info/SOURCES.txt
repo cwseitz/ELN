@@ -1,7 +1,5 @@
 README.md
 setup.py
-bamboo/__init__.py
-bamboo/_df.py
 bamboo.egg-info/PKG-INFO
 bamboo.egg-info/SOURCES.txt
 bamboo.egg-info/dependency_links.txt
