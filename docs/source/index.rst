@@ -22,7 +22,4 @@ Contents
 
    install
    format_ax
-
-
-Example
--------
+   canvas

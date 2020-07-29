@@ -1,0 +1,354 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Using Canvas for PDFs &mdash; bamboo  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Formatting the axis" href="format_ax.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> bamboo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format_ax.html">Formatting the axis</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Using Canvas for PDFs</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#using-defaults">Using defaults</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#using-a-built-in-template">Using a built-in template</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#defining-a-custom-template">Defining a custom template</a></li>
+</ul>
+</li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">bamboo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Using Canvas for PDFs</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/canvas.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="using-canvas-for-pdfs">
+<h1>Using Canvas for PDFs<a class="headerlink" href="#using-canvas-for-pdfs" title="Permalink to this headline">¶</a></h1>
+<dl class="class">
+<dt id="bamboo.objects.Canvas">
+<em class="property">class </em><code class="sig-prename descclassname">bamboo.objects.</code><code class="sig-name descname">Canvas</code><span class="sig-paren">(</span><em class="sig-param">template=None</em>, <em class="sig-param">nrows=1</em>, <em class="sig-param">ncols=1</em>, <em class="sig-param">title=''</em>, <em class="sig-param">author=''</em>, <em class="sig-param">left=None</em>, <em class="sig-param">right=None</em>, <em class="sig-param">bottom=None</em>, <em class="sig-param">top=None</em>, <em class="sig-param">wspace=None</em>, <em class="sig-param">hspace=None</em>, <em class="sig-param">figsize=(8.5</em>, <em class="sig-param">11)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/objects/_objects.html#Canvas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.objects.Canvas" title="Permalink to this definition">¶</a></dt>
+<dd><p>A object that wraps matplotlib.pyplot.subplots() to create a
+canvas-like figure object for output as 8.5 x 11 pdf.</p>
+<p class="rubric">Methods</p>
+<table class="docutils align-default">
+<colgroup>
+<col style="width: 68%" />
+<col style="width: 32%" />
+</colgroup>
+<tbody>
+<tr class="row-odd"><td><p><strong>add_header</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>get_custom</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>hide_canvas_ax</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-even"><td><p><strong>hide_sub_ax_ticks</strong></p></td>
+<td></td>
+</tr>
+<tr class="row-odd"><td><p><strong>preview</strong></p></td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<dl class="method">
+<dt id="bamboo.objects.Canvas.__init__">
+<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">template=None</em>, <em class="sig-param">nrows=1</em>, <em class="sig-param">ncols=1</em>, <em class="sig-param">title=''</em>, <em class="sig-param">author=''</em>, <em class="sig-param">left=None</em>, <em class="sig-param">right=None</em>, <em class="sig-param">bottom=None</em>, <em class="sig-param">top=None</em>, <em class="sig-param">wspace=None</em>, <em class="sig-param">hspace=None</em>, <em class="sig-param">figsize=(8.5</em>, <em class="sig-param">11)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/objects/_objects.html#Canvas.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.objects.Canvas.__init__" title="Permalink to this definition">¶</a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>template</strong><span class="classifier">list, optional</span></dt><dd><p>list of params for matplotlib.axes.Axes.inset_axes</p>
+</dd>
+<dt><strong>nrows: int, optional</strong></dt><dd><p>Number of rows if not using a custom template</p>
+</dd>
+<dt><strong>ncols: int, optional</strong></dt><dd><p>Number of columns if not using a custom template</p>
+</dd>
+<dt><strong>title: str, optional</strong></dt><dd><p>Title of the document</p>
+</dd>
+<dt><strong>author: str, optional</strong></dt><dd><p>Author of the document</p>
+</dd>
+<dt><strong>right: float, optional</strong></dt><dd><p>The position of the right edge of the subplots, as a fraction of the figure width.</p>
+</dd>
+<dt><strong>left: float, optional</strong></dt><dd><p>The position of the left edge of the subplots, as a fraction of the figure width.</p>
+</dd>
+<dt><strong>top</strong><span class="classifier">float, optional</span></dt><dd><p>The position of the top edge of the subplots, as a fraction of the figure height.</p>
+</dd>
+<dt><strong>bottom</strong><span class="classifier">float, optional</span></dt><dd><p>The position of the bottom edge of the subplots, as a fraction of the figure height.</p>
+</dd>
+<dt><strong>wspace</strong><span class="classifier">float, optional</span></dt><dd><p>The width of the padding between subplots, as a fraction of the average axes width.</p>
+</dd>
+<dt><strong>hspace</strong><span class="classifier">float, optional</span></dt><dd><p>The height of the padding between subplots, as a fraction of the average axes height.</p>
+</dd>
+<dt><strong>figsize: tuple, optional</strong></dt><dd><p>The size of the figure. Defaults to (8.5, 11) standard letter</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<div class="section" id="using-defaults">
+<h2>Using defaults<a class="headerlink" href="#using-defaults" title="Permalink to this headline">¶</a></h2>
+<p>The simplest use-case for the Canvas object involves creating a
+M x N grid of subplots. This is already built into matplotlib, so we
+can just pass the dimensions of the grid and we’re good to go. Also, you
+can choose how to position the subplots within the 8.5 x 11 page with
+the appropriate parameters.</p>
+<p>See <a class="reference external" href="https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots_adjust.html">https://matplotlib.org/api/_as_gen/matplotlib.pyplot.subplots_adjust.html</a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">bamboo.objects</span> <span class="kn">import</span> <span class="n">Canvas</span>
+<span class="kn">from</span> <span class="nn">bamboo.util</span> <span class="kn">import</span> <span class="n">format_ax</span>
+
+<span class="n">author</span> <span class="o">=</span> <span class="s1">&#39;Author&#39;</span>
+<span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Title&#39;</span>
+
+<span class="n">canvas</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">nrows</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span> <span class="n">ncols</span><span class="o">=</span><span class="mi">4</span><span class="p">,</span>
+                <span class="n">right</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">bottom</span><span class="o">=</span><span class="mf">0.5</span><span class="p">,</span>
+                <span class="n">wspace</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span> <span class="n">hspace</span><span class="o">=</span><span class="mf">0.75</span><span class="p">,</span>
+                <span class="n">author</span><span class="o">=</span><span class="n">author</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href=".//canvas-1.py">Source code</a>, <a class="reference external" href=".//canvas-1.png">png</a>, <a class="reference external" href=".//canvas-1.hires.png">hires.png</a>, <a class="reference external" href=".//canvas-1.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/canvas-1.png" src="_images/canvas-1.png" />
+</div>
+</div>
+<div class="section" id="using-a-built-in-template">
+<h2>Using a built-in template<a class="headerlink" href="#using-a-built-in-template" title="Permalink to this headline">¶</a></h2>
+<p>Various custom templates are also available to save time. These can be imported
+from bamboo.templates</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">bamboo.templates</span> <span class="kn">import</span> <span class="n">get_template_1</span>
+<span class="kn">from</span> <span class="nn">bamboo.objects</span> <span class="kn">import</span> <span class="n">Canvas</span>
+
+<span class="n">author</span> <span class="o">=</span> <span class="s1">&#39;Author&#39;</span>
+<span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Title&#39;</span>
+<span class="n">template</span> <span class="o">=</span> <span class="n">get_template_1</span><span class="p">()</span>
+<span class="n">canvas</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="n">template</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="n">author</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href=".//canvas-2.py">Source code</a>, <a class="reference external" href=".//canvas-2.png">png</a>, <a class="reference external" href=".//canvas-2.hires.png">hires.png</a>, <a class="reference external" href=".//canvas-2.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/canvas-2.png" src="_images/canvas-2.png" />
+</div>
+</div>
+<div class="section" id="defining-a-custom-template">
+<h2>Defining a custom template<a class="headerlink" href="#defining-a-custom-template" title="Permalink to this headline">¶</a></h2>
+<p>You can even design your own template if you’d like. To do this, pass a list
+of lists of the form [x0, y0, width, height]. Each sub-list represents a subplot
+and contains the coordinates of the lower left hand corner and its dimensions.</p>
+<p>See <a class="reference external" href="https://matplotlib.org/3.3.0/api/_as_gen/matplotlib.axes.Axes.inset_axes.html">https://matplotlib.org/3.3.0/api/_as_gen/matplotlib.axes.Axes.inset_axes.html</a></p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">bamboo.objects</span> <span class="kn">import</span> <span class="n">Canvas</span>
+
+<span class="n">author</span> <span class="o">=</span> <span class="s1">&#39;Author&#39;</span>
+<span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Title&#39;</span>
+<span class="n">template</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+     <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+     <span class="p">[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+     <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+     <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+     <span class="p">[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">]]</span>
+
+<span class="n">canvas</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="n">template</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="n">author</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>(<a class="reference external" href=".//canvas-3.py">Source code</a>, <a class="reference external" href=".//canvas-3.png">png</a>, <a class="reference external" href=".//canvas-3.hires.png">hires.png</a>, <a class="reference external" href=".//canvas-3.pdf">pdf</a>)</p>
+<div class="figure align-default">
+<img alt="_images/canvas-3.png" src="_images/canvas-3.png" />
+</div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+      
+        <a href="format_ax.html" class="btn btn-neutral float-left" title="Formatting the axis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Clayton W. Seitz
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
