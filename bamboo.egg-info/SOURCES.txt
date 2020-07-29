@@ -1,6 +1,0 @@
-README.md
-setup.py
-bamboo.egg-info/PKG-INFO
-bamboo.egg-info/SOURCES.txt
-bamboo.egg-info/dependency_links.txt
-bamboo.egg-info/top_level.txt
