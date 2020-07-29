@@ -23,3 +23,5 @@ Contents
    install
    format_ax
    canvas
+   metrics
+   plots

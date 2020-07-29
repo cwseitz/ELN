@@ -2,7 +2,7 @@ import numpy as np
 import trackpy as tp
 import matplotlib.pyplot as plt
 import seaborn as sns
-from ..math import msd, fit_msd
+from ..metrics import msd, fit_msd
 
 def add_mean_msd2(ax, df,
 

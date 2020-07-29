@@ -1,3 +1,24 @@
+__all__ = [
+            'add_mean_msd',
+            'add_D_hist',
+            'add_alpha_hist',
+            'add_t_test',
+            'add_gmm',
+            'add_violin',
+            'add_scatter',
+            'add_corr_coeff',
+            'add_fitting',
+            'add_grp_bar',
+            'add_stat_anno',
+            'add_strip_plot',
+            'add_scalebar',
+            'add_53bp1_count',
+            'add_53bp1_diffusion',
+            'add_colorbar',
+            'add_hist',
+            'add_53bp1_diffusion',
+            ]
+
 from ._add_mean_msd import *
 from ._add_D_hist import *
 from ._add_alpha_hist import *
@@ -16,4 +37,3 @@ from ._add_53bp1_count import *
 from ._add_53bp1_diffusion import *
 from ._add_colorbar import *
 from ._add_hist import *
-from ._anno import *

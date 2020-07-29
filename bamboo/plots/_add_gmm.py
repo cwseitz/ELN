@@ -28,17 +28,7 @@ def add_gmm(ax, blobs_df, cat_col,
 
     Examples
 	--------
-    import matplotlib.pyplot as plt
-    import pandas as pd
-    from cellquantifier.plot import add_D_hist, add_gmm
-    path = 'cellquantifier/data/physDataMerged.csv'
-    df = pd.read_csv(path, index_col=None, header=0)
-    fig, ax = plt.subplots()
-    add_D_hist(ax, df, 'exp_label',
-                RGBA_alpha=0.5)
-    add_gmm(ax, df, 'exp_label', n_comp=3, hist_col='D',
-                RGBA_alpha=0.5)
-    plt.show()
+
 
     """
 

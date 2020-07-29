@@ -2,10 +2,10 @@ import numpy as np; import pandas as pd
 import matplotlib.pyplot as plt
 import trackpy as tp
 
-from ..math import fit_spotcount
-from ..math import spot_count as sc
+from ..metrics import fit_spotcount
+from ..metrics import spot_count as sc
 from scipy.stats import sem
-from ..math import msd, fit_msd
+from ..metrics import msd, fit_msd
 
 def add_53bp1_count(ax, df,
 					exp_col='exp_label',

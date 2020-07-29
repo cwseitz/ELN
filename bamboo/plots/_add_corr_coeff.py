@@ -2,7 +2,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import cm
 from scipy.stats import pearsonr, spearmanr
-from cellquantifier.math import fit_linear
 
 def add_corr_coeff(ax,
 				   df,

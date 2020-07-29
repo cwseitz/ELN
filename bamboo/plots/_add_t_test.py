@@ -1,7 +1,7 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import pandas as pd
-from ..math import t_test
+from ..metrics import t_test
 
 
 def add_t_test(ax, blobs_df, cat_col, hist_col,

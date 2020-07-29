@@ -1,4 +1,3 @@
-from ._format_ax import format_ax
 from ..util import *
 import numpy as np
 

@@ -1,0 +1,570 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>bamboo.metrics._math &mdash; bamboo  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> bamboo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../format_ax.html">Formatting the axis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../canvas.html">Using Canvas for PDFs</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../metrics.html">Metrics</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../plots.html">Plots</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">bamboo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>bamboo.metrics._math</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for bamboo.metrics._math</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">scipy.optimize</span> <span class="k">as</span> <span class="nn">op</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+<span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">from</span> <span class="nn">scipy.optimize</span> <span class="kn">import</span> <span class="n">curve_fit</span>
+
+<span class="c1"># &quot;&quot;&quot;</span>
+<span class="c1"># ~~~~~~~~~~~General Functions~~~~~~~~~~~~~~</span>
+<span class="c1"># &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="fit_linear"><a class="viewcode-back" href="../../../metrics.html#bamboo.metrics.fit_linear">[docs]</a><span class="k">def</span> <span class="nf">fit_linear</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">	Perform linear regression</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	x : 1d ndarray</span>
+<span class="sd">		raw x data</span>
+<span class="sd">	y : 1d ndarray</span>
+<span class="sd">		raw y data</span>
+
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	popt, pcov : 1d ndarray</span>
+<span class="sd">		optimal parameters and covariance matrix</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+
+	<span class="n">slope</span><span class="p">,</span> <span class="n">intercept</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> \
+		<span class="n">stats</span><span class="o">.</span><span class="n">linregress</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">slope</span><span class="p">,</span> <span class="n">intercept</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">p</span></div>
+
+<div class="viewcode-block" id="fit_gaussian1d"><a class="viewcode-back" href="../../../metrics.html#bamboo.metrics.fit_gaussian1d">[docs]</a><span class="k">def</span> <span class="nf">fit_gaussian1d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">	1D Gaussian fitting function</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	x : 1d ndarray</span>
+<span class="sd">		raw x data</span>
+<span class="sd">	y : 1d ndarray</span>
+<span class="sd">		raw y data</span>
+
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	popt, pcov : 1d ndarray</span>
+<span class="sd">		optimal parameters and covariance matrix</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">gaussian1d</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span></div>
+
+<span class="k">def</span> <span class="nf">gaussian1d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">x0</span><span class="p">,</span><span class="n">amp</span><span class="p">,</span><span class="n">sigma</span><span class="p">):</span>
+
+	<span class="n">y</span> <span class="o">=</span> <span class="n">amp</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">x0</span><span class="p">)</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="p">(</span><span class="mi">2</span><span class="o">*</span><span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">))</span>
+
+	<span class="k">return</span> <span class="n">y</span>
+
+<div class="viewcode-block" id="fit_poisson1d"><a class="viewcode-back" href="../../../metrics.html#bamboo.metrics.fit_poisson1d">[docs]</a><span class="k">def</span> <span class="nf">fit_poisson1d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
+
+
+	<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">	1D Scaled Poisson fitting function</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	x : 1d ndarray</span>
+<span class="sd">		raw x data</span>
+<span class="sd">	y : 1d ndarray</span>
+<span class="sd">		raw y data</span>
+<span class="sd">	scale : float</span>
+<span class="sd">		scaling factor for the poisson distribution</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	popt, pcov : ndarray</span>
+<span class="sd">		optimal parameters and covariance matrix</span>
+
+
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span> <span class="o">=</span> <span class="n">curve_fit</span><span class="p">(</span><span class="n">poisson1d</span><span class="p">,</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span></div>
+
+<div class="viewcode-block" id="poisson1d"><a class="viewcode-back" href="../../../metrics.html#bamboo.metrics.poisson1d">[docs]</a><span class="k">def</span> <span class="nf">poisson1d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">lamb</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">	1D Scaled Poisson fitting function</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	x : 1d ndarray</span>
+<span class="sd">		raw x data</span>
+<span class="sd">	lamb : float</span>
+<span class="sd">		rate parameter</span>
+<span class="sd">	scale : float</span>
+<span class="sd">		scaling factor for the poisson distribution</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	1d ndarray</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+
+
+	<span class="k">return</span> <span class="n">scale</span><span class="o">*</span><span class="p">(</span><span class="n">lamb</span><span class="o">**</span><span class="n">x</span><span class="o">/</span><span class="n">factorial</span><span class="p">(</span><span class="n">x</span><span class="p">))</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">lamb</span><span class="p">)</span></div>
+
+<span class="c1"># &quot;&quot;&quot;</span>
+<span class="c1"># ~~~~~~~~~~~MSD Functions~~~~~~~~~~~~~~</span>
+<span class="c1"># &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="fit_offset_msd"><a class="viewcode-back" href="../../../metrics.html#bamboo.metrics.fit_offset_msd">[docs]</a><span class="k">def</span> <span class="nf">fit_offset_msd</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="n">space</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">):</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">	Mean Squared Dispacement fitting</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	x : 1d array</span>
+<span class="sd">		raw x data</span>
+<span class="sd">	y : 1d array</span>
+<span class="sd">		raw y data</span>
+<span class="sd">	space : string</span>
+<span class="sd">		&#39;log&#39; for fitting in log space (default)</span>
+<span class="sd">		&#39;linear&#39; for fitting in linear space</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	popt, pcov : 1d ndarray</span>
+<span class="sd">		optimal parameters and covariance matrix</span>
+
+
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="n">cmax</span> <span class="o">=</span> <span class="mf">1e6</span>
+	<span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">curve_fit</span><span class="p">(</span><span class="n">offset_msd</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>
+							  <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">cmax</span><span class="p">]),</span>
+							  <span class="n">maxfev</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">popt</span></div>
+
+<div class="viewcode-block" id="offset_msd"><a class="viewcode-back" href="../../../metrics.html#bamboo.metrics.offset_msd">[docs]</a><span class="k">def</span> <span class="nf">offset_msd</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">	Offset Mean Squared Dispacement fitting</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	x : 1d array</span>
+<span class="sd">		raw x data</span>
+<span class="sd">	D : float,</span>
+<span class="sd">		raw y data</span>
+<span class="sd">	alpha : string</span>
+<span class="sd">		&#39;log&#39; for fitting in log space (default)</span>
+<span class="sd">		&#39;linear&#39; for fitting in linear space</span>
+
+<span class="sd">	c : float</span>
+<span class="sd">		&#39;log&#39; for fitting in log space (default)</span>
+<span class="sd">		&#39;linear&#39; for fitting in linear space</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	popt, pcov : 1d ndarray</span>
+<span class="sd">		optimal parameters and covariance matrix</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+
+
+	<span class="k">return</span> <span class="mi">4</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="n">alpha</span><span class="p">)</span> <span class="o">+</span> <span class="n">c</span></div>
+
+<div class="viewcode-block" id="fit_msd"><a class="viewcode-back" href="../../../metrics.html#bamboo.metrics.fit_msd">[docs]</a><span class="k">def</span> <span class="nf">fit_msd</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="n">space</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">):</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">	Mean Squared Dispacement fitting</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	x : 1d array</span>
+<span class="sd">		raw x data</span>
+<span class="sd">	y : 1d array</span>
+<span class="sd">		raw y data</span>
+<span class="sd">	space : string</span>
+<span class="sd">		&#39;log&#39; for fitting in log space (default)</span>
+<span class="sd">		&#39;linear&#39; for fitting in linear space</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	popt, pcov : 1d ndarray</span>
+<span class="sd">		optimal parameters and covariance matrix</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+
+
+	<span class="k">def</span> <span class="nf">fit_msd_log</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+
+		<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+
+		<span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">x</span><span class="p">]</span>
+		<span class="n">y</span> <span class="o">=</span> <span class="p">[</span><span class="n">math</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">y</span><span class="p">]</span>
+
+		<span class="n">slope</span><span class="p">,</span> <span class="n">intercept</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">p</span><span class="p">,</span> <span class="n">stderr</span> <span class="o">=</span> \
+			<span class="n">stats</span><span class="o">.</span><span class="n">linregress</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+
+		<span class="n">D</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="n">intercept</span><span class="p">)</span> <span class="o">/</span> <span class="mi">4</span><span class="p">;</span> <span class="n">alpha</span> <span class="o">=</span> <span class="n">slope</span>
+		<span class="n">popt</span> <span class="o">=</span> <span class="p">(</span><span class="n">D</span><span class="p">,</span> <span class="n">alpha</span><span class="p">)</span>
+		<span class="k">return</span> <span class="n">popt</span>
+
+	<span class="k">def</span> <span class="nf">fit_msd_linear</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+
+		<span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">curve_fit</span><span class="p">(</span><span class="n">msd</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">,</span>
+								  <span class="n">bounds</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">]))</span>
+
+		<span class="k">return</span> <span class="n">popt</span>
+
+	<span class="k">if</span> <span class="n">space</span> <span class="o">==</span> <span class="s1">&#39;log&#39;</span><span class="p">:</span>
+		<span class="n">popt</span> <span class="o">=</span> <span class="n">fit_msd_log</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+	<span class="k">elif</span> <span class="n">space</span> <span class="o">==</span> <span class="s1">&#39;linear&#39;</span><span class="p">:</span>
+		<span class="n">popt</span> <span class="o">=</span> <span class="n">fit_msd_linear</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">popt</span></div>
+
+<span class="k">def</span> <span class="nf">msd</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">alpha</span><span class="p">):</span>
+
+	<span class="k">return</span> <span class="mi">4</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="n">alpha</span><span class="p">)</span>
+
+<span class="c1"># &quot;&quot;&quot;</span>
+<span class="c1"># ~~~~~~~~~~~Miscellaneous Functions~~~~~~~~~~~~~~</span>
+<span class="c1"># &quot;&quot;&quot;</span>
+
+<span class="k">def</span> <span class="nf">spot_count</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">tau</span><span class="p">,</span><span class="n">c</span><span class="p">):</span>
+
+	<span class="k">return</span> <span class="n">a</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">/</span><span class="n">tau</span><span class="p">))</span> <span class="o">+</span> <span class="n">c</span>
+
+<div class="viewcode-block" id="fit_spotcount"><a class="viewcode-back" href="../../../metrics.html#bamboo.metrics.fit_spotcount">[docs]</a><span class="k">def</span> <span class="nf">fit_spotcount</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">	Spot count fitting function</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	x : 1d ndarray</span>
+<span class="sd">		raw x data</span>
+<span class="sd">	y : 1d ndarray</span>
+<span class="sd">		raw y data</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	popt, pcov : 1d ndarray</span>
+<span class="sd">		optimal parameters and covariance matrix</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="n">c</span> <span class="o">=</span> <span class="n">y</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+	<span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">curve_fit</span><span class="p">(</span><span class="k">lambda</span> <span class="n">x</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">tau</span><span class="p">:</span> <span class="n">spot_count</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">tau</span><span class="p">,</span><span class="n">c</span><span class="p">),</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+	<span class="n">popt</span> <span class="o">=</span> <span class="p">[</span><span class="o">*</span><span class="n">popt</span><span class="p">,</span> <span class="n">c</span><span class="p">]</span>
+
+	<span class="k">return</span> <span class="n">popt</span></div>
+
+<div class="viewcode-block" id="fit_expdecay"><a class="viewcode-back" href="../../../metrics.html#bamboo.metrics.fit_expdecay">[docs]</a><span class="k">def</span> <span class="nf">fit_expdecay</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">	Exponential decay fitting function</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	x : 1d ndarray</span>
+<span class="sd">		raw x data</span>
+<span class="sd">	y : 1d ndarray</span>
+<span class="sd">		raw y data</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	popt, pcov : 1d ndarray</span>
+<span class="sd">		optimal parameters and covariance matrix</span>
+
+
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="k">def</span> <span class="nf">exp_decay</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="n">c</span><span class="p">):</span>
+
+		<span class="k">return</span> <span class="n">a</span><span class="o">*</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">b</span><span class="p">)</span><span class="o">/</span><span class="n">c</span><span class="p">))</span>
+
+	<span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">curve_fit</span><span class="p">(</span><span class="n">exp_decay</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span></div>
+
+<div class="viewcode-block" id="fit_sigmoid"><a class="viewcode-back" href="../../../metrics.html#bamboo.metrics.fit_sigmoid">[docs]</a><span class="k">def</span> <span class="nf">fit_sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">	Sigmoid fitting function</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	x : 1d ndarray</span>
+<span class="sd">		raw x data</span>
+<span class="sd">	y : 1d ndarray</span>
+<span class="sd">		raw y data</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	popt, pcov : 1d ndarray</span>
+<span class="sd">		optimal parameters and covariance matrix</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="k">def</span> <span class="nf">sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">):</span>
+
+		<span class="k">return</span> <span class="n">a</span><span class="o">/</span><span class="p">(</span><span class="mi">1</span><span class="o">+</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">b</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">-</span><span class="n">c</span><span class="p">)))</span> <span class="o">+</span> <span class="n">d</span>
+
+	<span class="n">param_bounds</span><span class="o">=</span><span class="p">([</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">],[</span><span class="n">np</span><span class="o">.</span><span class="n">inf</span><span class="p">,</span><span class="mf">1.5</span><span class="p">])</span>
+
+	<span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span> <span class="o">=</span> <span class="n">op</span><span class="o">.</span><span class="n">curve_fit</span><span class="p">(</span><span class="n">sigmoid</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span></div>
+
+<div class="viewcode-block" id="interpolate_lin"><a class="viewcode-back" href="../../../metrics.html#bamboo.metrics.interpolate_lin">[docs]</a><span class="k">def</span> <span class="nf">interpolate_lin</span><span class="p">(</span><span class="n">x_discrete</span><span class="p">,</span> <span class="n">f_discrete</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">pad_size</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">	Numpy wrapper for performing linear interpolation</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	x_discrete : 1d ndarray</span>
+<span class="sd">		discrete domain</span>
+<span class="sd">	y : 1d ndarray</span>
+<span class="sd">		discrete function of x_discrete</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+
+
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="n">min_center</span><span class="p">,</span> <span class="n">max_center</span> <span class="o">=</span> <span class="n">x_discrete</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">x_discrete</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+	<span class="n">x_cont</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">min_center</span><span class="p">,</span> <span class="n">max_center</span><span class="p">,</span> <span class="n">resolution</span><span class="p">)</span>
+
+	<span class="n">f_cont</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">interp</span><span class="p">(</span><span class="n">x_cont</span><span class="p">,</span> <span class="n">x_discrete</span><span class="p">,</span> <span class="n">f_discrete</span><span class="p">)</span>
+	<span class="k">if</span> <span class="n">pad_size</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+
+		<span class="n">x_pad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="n">min_center</span><span class="o">-</span><span class="n">pad_size</span><span class="p">,</span> <span class="n">min_center</span><span class="p">,</span> <span class="n">pad_size</span><span class="p">)</span>
+		<span class="n">f_cont_pad</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">full</span><span class="p">(</span><span class="n">pad_size</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+		<span class="n">x_cont</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">x_pad</span><span class="p">,</span> <span class="n">x_cont</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+		<span class="n">f_cont</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">concatenate</span><span class="p">((</span><span class="n">f_cont_pad</span><span class="p">,</span> <span class="n">f_cont</span><span class="p">),</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">x_cont</span><span class="p">,</span> <span class="n">f_con</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Clayton W. Seitz
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

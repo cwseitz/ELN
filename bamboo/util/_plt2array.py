@@ -17,17 +17,7 @@ def plt2array(fig):
 
     Examples
     --------
-    import matplotlib.pyplot as plt
-    import numpy as np
-    from cellquantifier.plot import plt2array
-    t = np.linspace(0, 4*np.pi, 1000)
-    fig, ax = plt.subplots()
-    ax.plot(t, np.cos(t))
-    ax.plot(t, np.sin(t))
-    result_array_rgb = plt2array(fig)
-    plt.clf()
-    plt.close()
-    print(result_array_rgb.shape)
+
     """
 
     fig.canvas.draw()

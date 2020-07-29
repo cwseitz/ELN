@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import trackpy as tp
 
 from scipy.stats import sem
-from ..math import msd, fit_msd
+from ..metrics import msd, fit_msd
 
 def add_53bp1_diffusion(ax, df,
 					exp_col='exp_label',

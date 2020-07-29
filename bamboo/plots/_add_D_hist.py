@@ -51,18 +51,7 @@ def add_D_hist(ax, df,
 
     Examples
 	--------
-    import matplotlib.pyplot as plt
-    import pandas as pd
-    from cellquantifier.plot import *
-    filepath = 'cellquantifier/data/physDataMerged.csv'
-    df = pd.read_csv(filepath, index_col=None, header=0)
-    df = df.drop_duplicates('particle')
-    fig, ax = plt.subplots()
-    add_D_hist(ax, df,
-            cat_col='exp_label',
-            cat_order=['Ctr', 'BLM'],
-            RGBA_alpha=0.5)
-    plt.show()
+
     """
 
     # """

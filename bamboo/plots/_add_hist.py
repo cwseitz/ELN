@@ -1,7 +1,6 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import seaborn as sns
-from ..io import *
 
 def add_hist(ax, df, data_col,
             cat_col=None,
@@ -51,18 +50,7 @@ def add_hist(ax, df, data_col,
 
     Examples
 	--------
-    import matplotlib.pyplot as plt
-    import pandas as pd
-    from cellquantifier.plot import add_hist
-    filepath = 'cellquantifier/data/physDataMerged.csv'
-    df = pd.read_csv(filepath, index_col=None, header=0)
-    df = df.drop_duplicates('D')
-    fig, ax = plt.subplots()
-    add_hist(ax, df, 'D',
-            cat_col='exp_label',
-            cat_order=['Ctr', 'BLM'],
-            RGBA_alpha=0.5)
-    plt.show()
+
     """
 
 

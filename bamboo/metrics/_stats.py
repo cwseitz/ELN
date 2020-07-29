@@ -15,10 +15,6 @@ def t_test(a,b):
 
 	Examples
 	--------
-	>>>from cellquantifier.plot import plot_d_hist
-	>>>path1 = 'cellquantifier/data/test_d_values1.csv'
-	>>>path2 = 'cellquantifier/data/test_d_values2.csv'
-	>>>plot_d_hist(damaged=path1, control=path2)
 
 	"""
 	t = ttest_ind(a, b)
