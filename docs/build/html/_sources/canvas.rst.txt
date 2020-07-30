@@ -1,14 +1,6 @@
 Using Canvas for PDFs
 =====================
 
-.. currentmodule:: bamboo.objects
-
-.. autoclass:: Canvas
-  :members:
-
-  .. automethod:: __init__
-
-
 Using defaults
 --------------------------------------
 

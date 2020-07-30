@@ -21,7 +21,6 @@ Contents
    :maxdepth: 1
 
    install
+   modules
    format_ax
    canvas
-   metrics
-   plots

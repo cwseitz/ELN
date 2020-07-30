@@ -86,10 +86,9 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../format_ax.html">Formatting the axis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../canvas.html">Using Canvas for PDFs</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../metrics.html">Metrics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="../../../plots.html">Plots</a></li>
 </ul>
 
             
@@ -163,7 +162,7 @@
 <span class="c1"># ~~~~~~~~~~~General Functions~~~~~~~~~~~~~~</span>
 <span class="c1"># &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="fit_linear"><a class="viewcode-back" href="../../../metrics.html#bamboo.metrics.fit_linear">[docs]</a><span class="k">def</span> <span class="nf">fit_linear</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<div class="viewcode-block" id="fit_linear"><a class="viewcode-back" href="../../../modules.html#bamboo.metrics.fit_linear">[docs]</a><span class="k">def</span> <span class="nf">fit_linear</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
 
 	<span class="sd">&quot;&quot;&quot;</span>
 
@@ -191,7 +190,7 @@
 
 	<span class="k">return</span> <span class="n">slope</span><span class="p">,</span> <span class="n">intercept</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">p</span></div>
 
-<div class="viewcode-block" id="fit_gaussian1d"><a class="viewcode-back" href="../../../metrics.html#bamboo.metrics.fit_gaussian1d">[docs]</a><span class="k">def</span> <span class="nf">fit_gaussian1d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<div class="viewcode-block" id="fit_gaussian1d"><a class="viewcode-back" href="../../../modules.html#bamboo.metrics.fit_gaussian1d">[docs]</a><span class="k">def</span> <span class="nf">fit_gaussian1d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
 
 	<span class="sd">&quot;&quot;&quot;</span>
 
@@ -222,7 +221,7 @@
 
 	<span class="k">return</span> <span class="n">y</span>
 
-<div class="viewcode-block" id="fit_poisson1d"><a class="viewcode-back" href="../../../metrics.html#bamboo.metrics.fit_poisson1d">[docs]</a><span class="k">def</span> <span class="nf">fit_poisson1d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
+<div class="viewcode-block" id="fit_poisson1d"><a class="viewcode-back" href="../../../modules.html#bamboo.metrics.fit_poisson1d">[docs]</a><span class="k">def</span> <span class="nf">fit_poisson1d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
 
 
 	<span class="sd">&quot;&quot;&quot;</span>
@@ -250,7 +249,7 @@
 
 	<span class="k">return</span> <span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span></div>
 
-<div class="viewcode-block" id="poisson1d"><a class="viewcode-back" href="../../../metrics.html#bamboo.metrics.poisson1d">[docs]</a><span class="k">def</span> <span class="nf">poisson1d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">lamb</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
+<div class="viewcode-block" id="poisson1d"><a class="viewcode-back" href="../../../modules.html#bamboo.metrics.poisson1d">[docs]</a><span class="k">def</span> <span class="nf">poisson1d</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">lamb</span><span class="p">,</span> <span class="n">scale</span><span class="p">):</span>
 
 	<span class="sd">&quot;&quot;&quot;</span>
 
@@ -278,7 +277,7 @@
 <span class="c1"># ~~~~~~~~~~~MSD Functions~~~~~~~~~~~~~~</span>
 <span class="c1"># &quot;&quot;&quot;</span>
 
-<div class="viewcode-block" id="fit_offset_msd"><a class="viewcode-back" href="../../../metrics.html#bamboo.metrics.fit_offset_msd">[docs]</a><span class="k">def</span> <span class="nf">fit_offset_msd</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="n">space</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="fit_offset_msd"><a class="viewcode-back" href="../../../modules.html#bamboo.metrics.fit_offset_msd">[docs]</a><span class="k">def</span> <span class="nf">fit_offset_msd</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="n">space</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">):</span>
 
 	<span class="sd">&quot;&quot;&quot;</span>
 
@@ -309,7 +308,7 @@
 
 	<span class="k">return</span> <span class="n">popt</span></div>
 
-<div class="viewcode-block" id="offset_msd"><a class="viewcode-back" href="../../../metrics.html#bamboo.metrics.offset_msd">[docs]</a><span class="k">def</span> <span class="nf">offset_msd</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
+<div class="viewcode-block" id="offset_msd"><a class="viewcode-back" href="../../../modules.html#bamboo.metrics.offset_msd">[docs]</a><span class="k">def</span> <span class="nf">offset_msd</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">D</span><span class="p">,</span> <span class="n">alpha</span><span class="p">,</span> <span class="n">c</span><span class="p">):</span>
 
 	<span class="sd">&quot;&quot;&quot;</span>
 
@@ -339,7 +338,7 @@
 
 	<span class="k">return</span> <span class="mi">4</span><span class="o">*</span><span class="n">D</span><span class="o">*</span><span class="p">(</span><span class="n">x</span><span class="o">**</span><span class="n">alpha</span><span class="p">)</span> <span class="o">+</span> <span class="n">c</span></div>
 
-<div class="viewcode-block" id="fit_msd"><a class="viewcode-back" href="../../../metrics.html#bamboo.metrics.fit_msd">[docs]</a><span class="k">def</span> <span class="nf">fit_msd</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="n">space</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="fit_msd"><a class="viewcode-back" href="../../../modules.html#bamboo.metrics.fit_msd">[docs]</a><span class="k">def</span> <span class="nf">fit_msd</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">,</span> <span class="n">space</span><span class="o">=</span><span class="s1">&#39;log&#39;</span><span class="p">):</span>
 
 	<span class="sd">&quot;&quot;&quot;</span>
 
@@ -403,7 +402,7 @@
 
 	<span class="k">return</span> <span class="n">a</span><span class="o">*</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">np</span><span class="o">.</span><span class="n">exp</span><span class="p">(</span><span class="o">-</span><span class="n">x</span><span class="o">/</span><span class="n">tau</span><span class="p">))</span> <span class="o">+</span> <span class="n">c</span>
 
-<div class="viewcode-block" id="fit_spotcount"><a class="viewcode-back" href="../../../metrics.html#bamboo.metrics.fit_spotcount">[docs]</a><span class="k">def</span> <span class="nf">fit_spotcount</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
+<div class="viewcode-block" id="fit_spotcount"><a class="viewcode-back" href="../../../modules.html#bamboo.metrics.fit_spotcount">[docs]</a><span class="k">def</span> <span class="nf">fit_spotcount</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">y</span><span class="p">):</span>
 
 	<span class="sd">&quot;&quot;&quot;</span>
 
@@ -429,7 +428,7 @@
 
 	<span class="k">return</span> <span class="n">popt</span></div>
 
-<div class="viewcode-block" id="fit_expdecay"><a class="viewcode-back" href="../../../metrics.html#bamboo.metrics.fit_expdecay">[docs]</a><span class="k">def</span> <span class="nf">fit_expdecay</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
+<div class="viewcode-block" id="fit_expdecay"><a class="viewcode-back" href="../../../modules.html#bamboo.metrics.fit_expdecay">[docs]</a><span class="k">def</span> <span class="nf">fit_expdecay</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
 
 	<span class="sd">&quot;&quot;&quot;</span>
 
@@ -458,7 +457,7 @@
 
 	<span class="k">return</span> <span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span></div>
 
-<div class="viewcode-block" id="fit_sigmoid"><a class="viewcode-back" href="../../../metrics.html#bamboo.metrics.fit_sigmoid">[docs]</a><span class="k">def</span> <span class="nf">fit_sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
+<div class="viewcode-block" id="fit_sigmoid"><a class="viewcode-back" href="../../../modules.html#bamboo.metrics.fit_sigmoid">[docs]</a><span class="k">def</span> <span class="nf">fit_sigmoid</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">):</span>
 
 	<span class="sd">&quot;&quot;&quot;</span>
 
@@ -488,7 +487,7 @@
 
 	<span class="k">return</span> <span class="n">popt</span><span class="p">,</span> <span class="n">pcov</span></div>
 
-<div class="viewcode-block" id="interpolate_lin"><a class="viewcode-back" href="../../../metrics.html#bamboo.metrics.interpolate_lin">[docs]</a><span class="k">def</span> <span class="nf">interpolate_lin</span><span class="p">(</span><span class="n">x_discrete</span><span class="p">,</span> <span class="n">f_discrete</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">pad_size</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<div class="viewcode-block" id="interpolate_lin"><a class="viewcode-back" href="../../../modules.html#bamboo.metrics.interpolate_lin">[docs]</a><span class="k">def</span> <span class="nf">interpolate_lin</span><span class="p">(</span><span class="n">x_discrete</span><span class="p">,</span> <span class="n">f_discrete</span><span class="p">,</span> <span class="n">resolution</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">pad_size</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
 
 	<span class="sd">&quot;&quot;&quot;</span>
 

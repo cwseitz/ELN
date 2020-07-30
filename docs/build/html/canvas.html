@@ -36,7 +36,6 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Metrics" href="metrics.html" />
     <link rel="prev" title="Formatting the axis" href="format_ax.html" /> 
 </head>
 
@@ -88,6 +87,7 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="format_ax.html">Formatting the axis</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Using Canvas for PDFs</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#using-defaults">Using defaults</a></li>
@@ -95,8 +95,6 @@
 <li class="toctree-l2"><a class="reference internal" href="#defining-a-custom-template">Defining a custom template</a></li>
 </ul>
 </li>
-<li class="toctree-l1"><a class="reference internal" href="metrics.html">Metrics</a></li>
-<li class="toctree-l1"><a class="reference internal" href="plots.html">Plots</a></li>
 </ul>
 
             
@@ -164,72 +162,6 @@
             
   <div class="section" id="using-canvas-for-pdfs">
 <h1>Using Canvas for PDFs<a class="headerlink" href="#using-canvas-for-pdfs" title="Permalink to this headline">¶</a></h1>
-<dl class="class">
-<dt id="bamboo.objects.Canvas">
-<em class="property">class </em><code class="sig-prename descclassname">bamboo.objects.</code><code class="sig-name descname">Canvas</code><span class="sig-paren">(</span><em class="sig-param">template=None</em>, <em class="sig-param">nrows=1</em>, <em class="sig-param">ncols=1</em>, <em class="sig-param">title=''</em>, <em class="sig-param">author=''</em>, <em class="sig-param">left=None</em>, <em class="sig-param">right=None</em>, <em class="sig-param">bottom=None</em>, <em class="sig-param">top=None</em>, <em class="sig-param">wspace=None</em>, <em class="sig-param">hspace=None</em>, <em class="sig-param">figsize=(8.5</em>, <em class="sig-param">11)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/objects/_objects.html#Canvas"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.objects.Canvas" title="Permalink to this definition">¶</a></dt>
-<dd><p>A object that wraps matplotlib.pyplot.subplots() to create a
-canvas-like figure object for output as 8.5 x 11 pdf.</p>
-<p class="rubric">Methods</p>
-<table class="docutils align-default">
-<colgroup>
-<col style="width: 68%" />
-<col style="width: 32%" />
-</colgroup>
-<tbody>
-<tr class="row-odd"><td><p><strong>add_header</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p><strong>get_custom</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p><strong>hide_canvas_ax</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-even"><td><p><strong>hide_sub_ax_ticks</strong></p></td>
-<td></td>
-</tr>
-<tr class="row-odd"><td><p><strong>preview</strong></p></td>
-<td></td>
-</tr>
-</tbody>
-</table>
-<dl class="method">
-<dt id="bamboo.objects.Canvas.__init__">
-<code class="sig-name descname">__init__</code><span class="sig-paren">(</span><em class="sig-param">self</em>, <em class="sig-param">template=None</em>, <em class="sig-param">nrows=1</em>, <em class="sig-param">ncols=1</em>, <em class="sig-param">title=''</em>, <em class="sig-param">author=''</em>, <em class="sig-param">left=None</em>, <em class="sig-param">right=None</em>, <em class="sig-param">bottom=None</em>, <em class="sig-param">top=None</em>, <em class="sig-param">wspace=None</em>, <em class="sig-param">hspace=None</em>, <em class="sig-param">figsize=(8.5</em>, <em class="sig-param">11)</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/objects/_objects.html#Canvas.__init__"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.objects.Canvas.__init__" title="Permalink to this definition">¶</a></dt>
-<dd><dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><dl class="simple">
-<dt><strong>template</strong><span class="classifier">list, optional</span></dt><dd><p>list of params for matplotlib.axes.Axes.inset_axes</p>
-</dd>
-<dt><strong>nrows: int, optional</strong></dt><dd><p>Number of rows if not using a custom template</p>
-</dd>
-<dt><strong>ncols: int, optional</strong></dt><dd><p>Number of columns if not using a custom template</p>
-</dd>
-<dt><strong>title: str, optional</strong></dt><dd><p>Title of the document</p>
-</dd>
-<dt><strong>author: str, optional</strong></dt><dd><p>Author of the document</p>
-</dd>
-<dt><strong>right: float, optional</strong></dt><dd><p>The position of the right edge of the subplots, as a fraction of the figure width.</p>
-</dd>
-<dt><strong>left: float, optional</strong></dt><dd><p>The position of the left edge of the subplots, as a fraction of the figure width.</p>
-</dd>
-<dt><strong>top</strong><span class="classifier">float, optional</span></dt><dd><p>The position of the top edge of the subplots, as a fraction of the figure height.</p>
-</dd>
-<dt><strong>bottom</strong><span class="classifier">float, optional</span></dt><dd><p>The position of the bottom edge of the subplots, as a fraction of the figure height.</p>
-</dd>
-<dt><strong>wspace</strong><span class="classifier">float, optional</span></dt><dd><p>The width of the padding between subplots, as a fraction of the average axes width.</p>
-</dd>
-<dt><strong>hspace</strong><span class="classifier">float, optional</span></dt><dd><p>The height of the padding between subplots, as a fraction of the average axes height.</p>
-</dd>
-<dt><strong>figsize: tuple, optional</strong></dt><dd><p>The size of the figure. Defaults to (8.5, 11) standard letter</p>
-</dd>
-</dl>
-</dd>
-</dl>
-</dd></dl>
-
-</dd></dl>
-
 <div class="section" id="using-defaults">
 <h2>Using defaults<a class="headerlink" href="#using-defaults" title="Permalink to this headline">¶</a></h2>
 <p>The simplest use-case for the Canvas object involves creating a
@@ -307,8 +239,6 @@ and contains the coordinates of the lower left hand corner and its dimensions.</
           <footer>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
-      
-        <a href="metrics.html" class="btn btn-neutral float-right" title="Metrics" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
         <a href="format_ax.html" class="btn btn-neutral float-left" title="Formatting the axis" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>

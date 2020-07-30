@@ -1,10 +1,6 @@
 Formatting the axis
 ===================
 
-.. currentmodule:: bamboo.util
-
-.. autofunction:: format_ax
-
 Example
 ------------------
 
@@ -29,6 +25,7 @@ Example
  from bamboo.util import format_ax
 
  fig, ax = plt.subplots()
+ format_ax(ax, ax_is_box=False)
  plt.show()
 
 .. plot::
