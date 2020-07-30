@@ -10,7 +10,7 @@ __all__ = [
             'set_xylabel',
             'format_label',
             'format_legend',
-            'rename_legend'
+            'rename_legend',
 
             'add_obj_lbl',
             'add_obj_type',
