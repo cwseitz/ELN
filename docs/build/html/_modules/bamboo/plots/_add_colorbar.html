@@ -1,0 +1,348 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>bamboo.plots._add_colorbar &mdash; bamboo  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> bamboo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../format_ax.html">Formatting the axis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../canvas.html">Using Canvas for PDFs</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">bamboo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>bamboo.plots._add_colorbar</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for bamboo.plots._add_colorbar</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="kn">from</span> <span class="nn">mpl_toolkits.axes_grid1</span> <span class="kn">import</span> <span class="n">make_axes_locatable</span>
+<span class="kn">import</span> <span class="nn">matplotlib.ticker</span> <span class="k">as</span> <span class="nn">ticker</span>
+
+
+<div class="viewcode-block" id="add_outside_colorbar"><a class="viewcode-back" href="../../../modules.html#bamboo.plots.add_outside_colorbar">[docs]</a><span class="k">def</span> <span class="nf">add_outside_colorbar</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">df</span><span class="p">,</span> <span class="n">data_col</span><span class="o">=</span><span class="s1">&#39;D&#39;</span><span class="p">,</span>
+                        <span class="n">cb_pos</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span>
+                        <span class="n">cb_size</span><span class="o">=</span><span class="s1">&#39;5%&#39;</span><span class="p">,</span>
+                        <span class="n">cb_pad</span><span class="o">=</span><span class="mf">0.1</span><span class="p">,</span>
+                        <span class="n">cb_colormap</span><span class="o">=</span><span class="s1">&#39;coolwarm&#39;</span><span class="p">,</span>
+                        <span class="n">cb_orientation</span><span class="o">=</span><span class="s1">&#39;vertical&#39;</span><span class="p">,</span>
+                        <span class="n">cb_extend</span><span class="o">=</span><span class="s1">&#39;both&#39;</span><span class="p">,</span>
+                        <span class="n">cb_min</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">cb_max</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">cb_major_ticker</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">cb_minor_ticker</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span>
+                        <span class="n">cb_tick_loc</span><span class="o">=</span><span class="s1">&#39;right&#39;</span><span class="p">,</span>
+                        <span class="n">show_colorbar</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+                        <span class="n">label_str</span><span class="o">=</span><span class="sa">r</span><span class="s1">&#39;D (nm$^2$/s)&#39;</span><span class="p">,</span>
+                        <span class="n">label_font_size</span><span class="o">=</span><span class="mi">20</span><span class="p">,</span>
+                        <span class="n">label_color</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">),</span>
+                        <span class="n">label_font</span><span class="o">=</span><span class="s1">&#39;Arial&#39;</span><span class="p">,</span>
+                        <span class="n">label_weight</span><span class="o">=</span><span class="s1">&#39;bold&#39;</span><span class="p">,</span>
+                        <span class="p">):</span>
+    <span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Add colorbar outside of the ax.</span>
+<span class="sd">    Colorbar data are contained in the df.</span>
+
+<span class="sd">    Parameters</span>
+<span class="sd">    ----------</span>
+<span class="sd">    ax : object</span>
+<span class="sd">        matplotlib axis to add colorbar.</span>
+
+<span class="sd">    df : DataFrame</span>
+<span class="sd">		DataFrame containing &#39;D&#39; columns</span>
+
+<span class="sd">    data_col : string</span>
+<span class="sd">        Data colunm name in the df</span>
+
+<span class="sd">    label_str : string</span>
+<span class="sd">        Use this as the colorbar label</span>
+
+<span class="sd">    label_font_size : string or integer</span>
+<span class="sd">        Define the label text size. eg. &#39;large&#39;, &#39;x-large&#39;, 10, 40...</span>
+
+<span class="sd">    label_color : tuple</span>
+<span class="sd">        RGBA or RGB tuple to define the label and tick color</span>
+
+<span class="sd">    label_font: string</span>
+<span class="sd">        Font used in the figure. Default is &#39;Arial&#39;</span>
+
+<span class="sd">    label_weight : string</span>
+<span class="sd">        font weight string as mpl.ax.text. (&#39;light&#39;, &#39;bold&#39;...)</span>
+
+<span class="sd">    cb_pos : string</span>
+<span class="sd">        append_axes position string. (&#39;right&#39;, &#39;top&#39;...)</span>
+
+<span class="sd">    cb_size : string</span>
+<span class="sd">        colorbar size string. (&#39;5%&#39;)</span>
+
+<span class="sd">    cb_pad : float</span>
+<span class="sd">        gap between colorbar and ax in inches.</span>
+
+<span class="sd">    cb_colormap : string</span>
+
+<span class="sd">    cb_orientation : string</span>
+<span class="sd">        eg. &#39;vertical&#39;, &#39;horizontal&#39;</span>
+
+<span class="sd">    cb_extend : string</span>
+<span class="sd">        eg. &#39;neither&#39;, &#39;both&#39;, None...</span>
+
+<span class="sd">    cb_min, cb_max: float</span>
+<span class="sd">        [cb_min, cb_max] is the color bar range.</span>
+
+<span class="sd">    cb_major_ticker, cb_minor_ticker: float</span>
+<span class="sd">        Major and minor setting for the color bar</span>
+
+<span class="sd">    show_colorbar : bool</span>
+<span class="sd">        If False, only return colormap and df, no colorbar added.</span>
+
+<span class="sd">    Returns</span>
+<span class="sd">    -------</span>
+<span class="sd">    Annotate colorbar outside of the ax.</span>
+<span class="sd">    df, colormap returned.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+
+    <span class="n">colormap</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">get_cmap</span><span class="p">(</span><span class="n">cb_colormap</span><span class="p">)</span>
+
+    <span class="c1"># &quot;&quot;&quot;</span>
+    <span class="c1"># ~~~~~~~~~~~customized the tick; or automated~~~~~~~~~~~~~~</span>
+    <span class="c1"># &quot;&quot;&quot;</span>
+    <span class="n">norm_col</span> <span class="o">=</span> <span class="n">data_col</span> <span class="o">+</span> <span class="s1">&#39;_norm&#39;</span>
+    <span class="k">if</span> <span class="n">cb_max</span><span class="o">!=</span><span class="kc">None</span> <span class="ow">and</span> <span class="n">cb_min</span><span class="o">!=</span><span class="kc">None</span> \
+    <span class="ow">and</span> <span class="n">cb_major_ticker</span><span class="o">!=</span><span class="kc">None</span> <span class="ow">and</span> <span class="n">cb_minor_ticker</span><span class="o">!=</span><span class="kc">None</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">norm_col</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">data_col</span><span class="p">]</span> <span class="o">-</span> <span class="n">cb_min</span><span class="p">)</span><span class="o">/</span><span class="p">(</span><span class="n">cb_max</span> <span class="o">-</span> <span class="n">cb_min</span><span class="p">)</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span> <span class="o">=</span> <span class="n">cb_min</span><span class="p">,</span> <span class="n">vmax</span> <span class="o">=</span> <span class="n">cb_max</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">df</span><span class="p">[</span><span class="n">norm_col</span><span class="p">]</span> <span class="o">=</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">data_col</span><span class="p">]</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="n">data_col</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span> \
+                        <span class="o">/</span> <span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">data_col</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">()</span> <span class="o">-</span> <span class="n">df</span><span class="p">[</span><span class="n">data_col</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">())</span>
+        <span class="n">norm</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">colors</span><span class="o">.</span><span class="n">Normalize</span><span class="p">(</span><span class="n">vmin</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">data_col</span><span class="p">]</span><span class="o">.</span><span class="n">min</span><span class="p">(),</span>
+                                    <span class="n">vmax</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">data_col</span><span class="p">]</span><span class="o">.</span><span class="n">max</span><span class="p">())</span>
+
+    <span class="k">if</span> <span class="n">show_colorbar</span><span class="p">:</span>
+        <span class="c1"># &quot;&quot;&quot;</span>
+        <span class="c1"># ~~~~~~~~~~~Add D value scale bar to left plot~~~~~~~~~~~~~~</span>
+        <span class="c1"># &quot;&quot;&quot;</span>
+        <span class="c1"># backup code for add_inside_colorbar()</span>
+        <span class="c1">#ax_cb = ax.inset_axes([0.1, 0.85, 0.4, 0.03])</span>
+
+        <span class="c1"># Create an axes (ax_cb) on the right side</span>
+        <span class="n">divider</span> <span class="o">=</span> <span class="n">make_axes_locatable</span><span class="p">(</span><span class="n">ax</span><span class="p">)</span>
+        <span class="n">ax_cb</span> <span class="o">=</span> <span class="n">divider</span><span class="o">.</span><span class="n">append_axes</span><span class="p">(</span><span class="n">cb_pos</span><span class="p">,</span> <span class="n">size</span><span class="o">=</span><span class="n">cb_size</span><span class="p">,</span> <span class="n">pad</span><span class="o">=</span><span class="n">cb_pad</span><span class="p">)</span>
+
+
+        <span class="n">cb1</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">colorbar</span><span class="o">.</span><span class="n">ColorbarBase</span><span class="p">(</span><span class="n">ax_cb</span><span class="p">,</span>
+                                <span class="n">cmap</span><span class="o">=</span><span class="n">colormap</span><span class="p">,</span>
+                                <span class="n">norm</span><span class="o">=</span><span class="n">norm</span><span class="p">,</span>
+                                <span class="n">orientation</span><span class="o">=</span><span class="n">cb_orientation</span><span class="p">,</span>
+                                <span class="n">extend</span><span class="o">=</span><span class="n">cb_extend</span><span class="p">,</span>
+                                <span class="n">ticklocation</span><span class="o">=</span><span class="n">cb_tick_loc</span><span class="p">)</span>
+
+        <span class="c1"># Setup colorbar format</span>
+        <span class="n">cb1</span><span class="o">.</span><span class="n">outline</span><span class="o">.</span><span class="n">set_visible</span><span class="p">(</span><span class="kc">False</span><span class="p">)</span>
+        <span class="n">plt</span><span class="o">.</span><span class="n">yticks</span><span class="p">(</span><span class="n">fontname</span><span class="o">=</span><span class="n">label_font</span><span class="p">,</span>
+                    <span class="n">weight</span><span class="o">=</span><span class="n">label_weight</span><span class="p">,</span>
+                    <span class="n">color</span><span class="o">=</span><span class="n">label_color</span><span class="p">,</span>
+                    <span class="n">size</span><span class="o">=</span><span class="n">label_font_size</span><span class="p">)</span>
+
+        <span class="c1"># Setup colorbar label</span>
+        <span class="n">ax_cb</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="n">label_str</span><span class="p">,</span>
+                        <span class="n">fontname</span><span class="o">=</span><span class="n">label_font</span><span class="p">,</span>
+                        <span class="n">color</span><span class="o">=</span><span class="n">label_color</span><span class="p">,</span>
+                        <span class="n">weight</span><span class="o">=</span><span class="n">label_weight</span><span class="p">,</span>
+                        <span class="n">size</span><span class="o">=</span><span class="n">label_font_size</span><span class="p">)</span>
+
+        <span class="c1"># customize colorbar scale if needed</span>
+        <span class="k">if</span> <span class="n">cb_max</span><span class="o">!=</span><span class="kc">None</span> <span class="ow">and</span> <span class="n">cb_min</span><span class="o">!=</span><span class="kc">None</span> \
+        <span class="ow">and</span> <span class="n">cb_major_ticker</span><span class="o">!=</span><span class="kc">None</span> <span class="ow">and</span> <span class="n">cb_minor_ticker</span><span class="o">!=</span><span class="kc">None</span><span class="p">:</span>
+            <span class="n">ax_cb</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">ticker</span><span class="o">.</span><span class="n">MultipleLocator</span><span class="p">(</span><span class="n">cb_major_ticker</span><span class="p">))</span>
+            <span class="n">ax_cb</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_minor_locator</span><span class="p">(</span><span class="n">ticker</span><span class="o">.</span><span class="n">MultipleLocator</span><span class="p">(</span><span class="n">cb_minor_ticker</span><span class="p">))</span>
+
+    <span class="k">return</span> <span class="n">df</span><span class="p">,</span> <span class="n">colormap</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Clayton W. Seitz
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

@@ -4,7 +4,8 @@ __all__ = [
             'add_alpha_hist',
             'add_t_test',
             'add_gmm',
-            'add_violin',
+            'add_violin_1',
+            'add_violin_2',
             'add_scatter',
             'add_corr_coeff',
             'add_fitting',
@@ -14,7 +15,7 @@ __all__ = [
             'add_scalebar',
             'add_53bp1_count',
             'add_53bp1_diffusion',
-            'add_colorbar',
+            'add_outside_colorbar',
             'add_hist',
             'add_53bp1_diffusion',
             ]

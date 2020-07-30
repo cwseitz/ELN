@@ -621,6 +621,56 @@ The MSD data are obtained from df.</p>
 </dd></dl>
 
 <dl class="function">
+<dt id="bamboo.plots.add_violin_1">
+<code class="sig-prename descclassname">bamboo.plots.</code><code class="sig-name descname">add_violin_1</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">df</em>, <em class="sig-param">data_col</em>, <em class="sig-param">cat_col</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/plots/_add_violin.html#add_violin_1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.plots.add_violin_1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add violin plot in matplotlib axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">object</span></dt><dd><p>matplotlib axis to annotate ellipse.</p>
+</dd>
+<dt><strong>df</strong><span class="classifier">DataFrame</span></dt><dd><p>DataFrame containing data_col, cat_col</p>
+</dd>
+<dt><strong>data_col</strong><span class="classifier">str</span></dt><dd><p>Column contain the data</p>
+</dd>
+<dt><strong>cat_col</strong><span class="classifier">str</span></dt><dd><p>Column to use for categorical sorting</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Add violin plots in the ax.</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="bamboo.plots.add_violin_2">
+<code class="sig-prename descclassname">bamboo.plots.</code><code class="sig-name descname">add_violin_2</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">df</em>, <em class="sig-param">data_col</em>, <em class="sig-param">cat_col</em>, <em class="sig-param">hue_order=None</em>, <em class="sig-param">inner='quartile'</em>, <em class="sig-param">RGBA_alpha=0.6</em>, <em class="sig-param">linewidth=0.5</em>, <em class="sig-param">set_format=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/plots/_add_violin.html#add_violin_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.plots.add_violin_2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add violin plot in matplotlib axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">object</span></dt><dd><p>matplotlib axis to annotate ellipse.</p>
+</dd>
+<dt><strong>df</strong><span class="classifier">DataFrame</span></dt><dd><p>DataFrame containing data_col, cat_col</p>
+</dd>
+<dt><strong>data_col</strong><span class="classifier">str</span></dt><dd><p>Column contain the data</p>
+</dd>
+<dt><strong>cat_col</strong><span class="classifier">str</span></dt><dd><p>Column to use for categorical sorting</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Add violin plots in the ax.</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
 <dt id="bamboo.plots.add_scatter">
 <code class="sig-prename descclassname">bamboo.plots.</code><code class="sig-name descname">add_scatter</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">df</em>, <em class="sig-param">col1</em>, <em class="sig-param">col2</em>, <em class="sig-param">col1_alias=None</em>, <em class="sig-param">col2_alias=None</em>, <em class="sig-param">norm=False</em>, <em class="sig-param">label=None</em>, <em class="sig-param">color='blue'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/plots/_add_scatter.html#add_scatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.plots.add_scatter" title="Permalink to this definition">¶</a></dt>
 <dd><p>Generate scatter plot of two variables</p>
@@ -860,6 +910,58 @@ columns</p>
 </dd>
 <dt><strong>cat_col</strong><span class="classifier">None or str</span></dt><dd><p>Column to use for categorical sorting</p>
 </dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="bamboo.plots.add_outside_colorbar">
+<code class="sig-prename descclassname">bamboo.plots.</code><code class="sig-name descname">add_outside_colorbar</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">df</em>, <em class="sig-param">data_col='D'</em>, <em class="sig-param">cb_pos='right'</em>, <em class="sig-param">cb_size='5%'</em>, <em class="sig-param">cb_pad=0.1</em>, <em class="sig-param">cb_colormap='coolwarm'</em>, <em class="sig-param">cb_orientation='vertical'</em>, <em class="sig-param">cb_extend='both'</em>, <em class="sig-param">cb_min=None</em>, <em class="sig-param">cb_max=None</em>, <em class="sig-param">cb_major_ticker=None</em>, <em class="sig-param">cb_minor_ticker=None</em>, <em class="sig-param">cb_tick_loc='right'</em>, <em class="sig-param">show_colorbar=True</em>, <em class="sig-param">label_str='D (nm$^2$/s)'</em>, <em class="sig-param">label_font_size=20</em>, <em class="sig-param">label_color=(0</em>, <em class="sig-param">0</em>, <em class="sig-param">0)</em>, <em class="sig-param">label_font='Arial'</em>, <em class="sig-param">label_weight='bold'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/plots/_add_colorbar.html#add_outside_colorbar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.plots.add_outside_colorbar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add colorbar outside of the ax.
+Colorbar data are contained in the df.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">object</span></dt><dd><p>matplotlib axis to add colorbar.</p>
+</dd>
+<dt><strong>df</strong><span class="classifier">DataFrame</span></dt><dd><p>DataFrame containing ‘D’ columns</p>
+</dd>
+<dt><strong>data_col</strong><span class="classifier">string</span></dt><dd><p>Data colunm name in the df</p>
+</dd>
+<dt><strong>label_str</strong><span class="classifier">string</span></dt><dd><p>Use this as the colorbar label</p>
+</dd>
+<dt><strong>label_font_size</strong><span class="classifier">string or integer</span></dt><dd><p>Define the label text size. eg. ‘large’, ‘x-large’, 10, 40…</p>
+</dd>
+<dt><strong>label_color</strong><span class="classifier">tuple</span></dt><dd><p>RGBA or RGB tuple to define the label and tick color</p>
+</dd>
+<dt><strong>label_font: string</strong></dt><dd><p>Font used in the figure. Default is ‘Arial’</p>
+</dd>
+<dt><strong>label_weight</strong><span class="classifier">string</span></dt><dd><p>font weight string as mpl.ax.text. (‘light’, ‘bold’…)</p>
+</dd>
+<dt><strong>cb_pos</strong><span class="classifier">string</span></dt><dd><p>append_axes position string. (‘right’, ‘top’…)</p>
+</dd>
+<dt><strong>cb_size</strong><span class="classifier">string</span></dt><dd><p>colorbar size string. (‘5%’)</p>
+</dd>
+<dt><strong>cb_pad</strong><span class="classifier">float</span></dt><dd><p>gap between colorbar and ax in inches.</p>
+</dd>
+<dt><strong>cb_colormap</strong><span class="classifier">string</span></dt><dd></dd>
+<dt><strong>cb_orientation</strong><span class="classifier">string</span></dt><dd><p>eg. ‘vertical’, ‘horizontal’</p>
+</dd>
+<dt><strong>cb_extend</strong><span class="classifier">string</span></dt><dd><p>eg. ‘neither’, ‘both’, None…</p>
+</dd>
+<dt><strong>cb_min, cb_max: float</strong></dt><dd><p>[cb_min, cb_max] is the color bar range.</p>
+</dd>
+<dt><strong>cb_major_ticker, cb_minor_ticker: float</strong></dt><dd><p>Major and minor setting for the color bar</p>
+</dd>
+<dt><strong>show_colorbar</strong><span class="classifier">bool</span></dt><dd><p>If False, only return colormap and df, no colorbar added.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Annotate colorbar outside of the ax.</dt><dd></dd>
+<dt>df, colormap returned.</dt><dd></dd>
 </dl>
 </dd>
 </dl>
