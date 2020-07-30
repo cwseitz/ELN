@@ -1,0 +1,702 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>bamboo.util._df_utils &mdash; bamboo  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="../../../" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+        <script src="../../../_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="../../../_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="../../../index.html" class="icon icon-home" alt="Documentation Home"> bamboo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../format_ax.html">Formatting the axis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../canvas.html">Using Canvas for PDFs</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">bamboo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+        
+          <li><a href="../../index.html">Module code</a> &raquo;</li>
+        
+      <li>bamboo.util._df_utils</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <h1>Source code for bamboo.util._df_utils</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">matplotlib</span> <span class="k">as</span> <span class="nn">mpl</span>
+<span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
+
+<span class="kn">from</span> <span class="nn">scipy</span> <span class="kn">import</span> <span class="n">stats</span>
+<span class="kn">from</span> <span class="nn">skimage.measure</span> <span class="kn">import</span> <span class="n">label</span>
+
+
+<span class="k">def</span> <span class="nf">add_obj_lbl</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">is_labeled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">col_name</span><span class="o">=</span><span class="s1">&#39;region_label&#39;</span><span class="p">):</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Add object_lbl column to DataFrame</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	df : DataFrame</span>
+<span class="sd">		DataFrame with x,y columns</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">is_labeled</span><span class="p">:</span>
+		<span class="n">mask</span> <span class="o">=</span> <span class="n">label</span><span class="p">(</span><span class="n">mask</span><span class="p">)</span>
+
+	<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+		<span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">col_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">mask</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">])),</span> \
+									    <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">]))])</span>
+	<span class="k">return</span> <span class="n">df</span>
+
+<div class="viewcode-block" id="add_obj_type"><a class="viewcode-back" href="../../../modules.html#bamboo.util.add_obj_type">[docs]</a><span class="k">def</span> <span class="nf">add_obj_type</span><span class="p">(</span><span class="n">mask_arr</span><span class="p">,</span> <span class="n">blobs_df</span><span class="p">,</span> <span class="n">col_name</span><span class="o">=</span><span class="s1">&#39;region_type&#39;</span><span class="p">,</span>
+				 <span class="n">obj_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pltshow</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">det_colors</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">	Adds a obj type column to blobs_df. Each unique obj could be</span>
+<span class="sd">	cytoplasm, nucleus, etc.</span>
+
+<span class="sd">	Pseudo code</span>
+<span class="sd">	----------</span>
+<span class="sd">	1. Create region type mask</span>
+<span class="sd">	2. Call add_obj_lbl() where region labels are encoded region types</span>
+<span class="sd">	3. Convert encoded region types to preferred names</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+
+<span class="sd">	mask_arr : list,</span>
+<span class="sd">		list of masks each defining a unique object</span>
+<span class="sd">	blobs_df: DataFrame</span>
+<span class="sd">		dataframe containing detection instances and coordinates</span>
+<span class="sd">	col_name : str, optional</span>
+<span class="sd">		name to use for region type column</span>
+<span class="sd">	obj_names: list, optional</span>
+<span class="sd">		names to use for different regions (in same order as mask_arr)</span>
+
+<span class="sd">	Example</span>
+<span class="sd">	----------</span>
+<span class="sd">	#read statements</span>
+<span class="sd">	blobs_df = add_obj_type([parent_mask, child_mask], blobs_df=blobs_df,</span>
+<span class="sd">							 obj_names=[&#39;cyto&#39;, &#39;nuc&#39;])</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="c1"># &quot;&quot;&quot;</span>
+	<span class="c1"># ~~~~~~~~~~~Create the region type mask~~~~~~~~~~~~~~</span>
+	<span class="c1"># &quot;&quot;&quot;</span>
+
+	<span class="n">reg_type_mask</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">zeros_like</span><span class="p">(</span><span class="n">mask_arr</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span>
+
+	<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">mask</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">mask_arr</span><span class="p">):</span>
+		<span class="n">reg_type_mask</span><span class="p">[</span><span class="n">mask</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+
+	<span class="c1"># &quot;&quot;&quot;</span>
+	<span class="c1"># ~~~~~~~~~~~Add the numerical labels from reg_type_mask~~~~~~~~~~~~~~</span>
+	<span class="c1"># &quot;&quot;&quot;</span>
+
+	<span class="n">blobs_df</span> <span class="o">=</span> <span class="n">add_obj_lbl</span><span class="p">(</span><span class="n">blobs_df</span><span class="p">,</span> <span class="n">reg_type_mask</span><span class="p">,</span> <span class="n">col_name</span><span class="o">=</span><span class="n">col_name</span><span class="p">)</span>
+	<span class="n">num_types</span> <span class="o">=</span> <span class="nb">sorted</span><span class="p">(</span><span class="n">blobs_df</span><span class="p">[</span><span class="s1">&#39;region_type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span>
+
+
+	<span class="c1"># &quot;&quot;&quot;</span>
+	<span class="c1"># ~~~~~~~~~~~Check if user has supplied detection colors~~~~~~~~~~~~~~</span>
+	<span class="c1"># &quot;&quot;&quot;</span>
+
+	<span class="k">if</span> <span class="ow">not</span> <span class="n">det_colors</span><span class="p">:</span>
+		<span class="n">det_colors</span> <span class="o">=</span> <span class="n">mpl</span><span class="o">.</span><span class="n">cm</span><span class="o">.</span><span class="n">coolwarm</span><span class="p">(</span><span class="n">np</span><span class="o">.</span><span class="n">linspace</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="nb">len</span><span class="p">(</span><span class="n">num_types</span><span class="p">)))</span>
+
+	<span class="c1"># &quot;&quot;&quot;</span>
+	<span class="c1"># ~~~~~~~~~~~Show the reg_type_mask and detections~~~~~~~~~~~~~~</span>
+	<span class="c1"># &quot;&quot;&quot;</span>
+
+	<span class="k">if</span> <span class="n">pltshow</span><span class="p">:</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">imshow</span><span class="p">(</span><span class="n">reg_type_mask</span><span class="p">,</span> <span class="n">cmap</span><span class="o">=</span><span class="s1">&#39;gray&#39;</span><span class="p">)</span>
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="nb">type</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">num_types</span><span class="p">):</span>
+			<span class="n">this_df</span> <span class="o">=</span> <span class="n">blobs_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">blobs_df</span><span class="p">[</span><span class="s1">&#39;region_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="nb">type</span><span class="p">]</span>
+			<span class="n">plt</span><span class="o">.</span><span class="n">scatter</span><span class="p">(</span><span class="n">this_df</span><span class="p">[</span><span class="s1">&#39;y&#39;</span><span class="p">],</span><span class="n">this_df</span><span class="p">[</span><span class="s1">&#39;x&#39;</span><span class="p">],</span> <span class="n">color</span><span class="o">=</span><span class="n">det_colors</span><span class="p">[</span><span class="n">i</span><span class="p">],</span> <span class="n">s</span><span class="o">=</span><span class="mi">2</span><span class="p">)</span>
+		<span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+
+	<span class="c1"># &quot;&quot;&quot;</span>
+	<span class="c1"># ~~~~~~~~~~~Convert numerical labels to names, if specified~~~~~~~~~~~~~~</span>
+	<span class="c1"># &quot;&quot;&quot;</span>
+
+
+	<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">obj_names</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">len</span><span class="p">(</span><span class="n">num_types</span><span class="p">):</span>
+		<span class="n">obj_names</span><span class="o">.</span><span class="n">insert</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="s1">&#39;bg&#39;</span><span class="p">)</span>
+
+	<span class="k">if</span> <span class="n">obj_names</span><span class="p">:</span>
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">num_type</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">num_types</span><span class="p">):</span>
+			<span class="n">blobs_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">blobs_df</span><span class="p">[</span><span class="s1">&#39;region_type&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">num_type</span><span class="p">,</span> \
+						<span class="s1">&#39;region_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">obj_names</span><span class="p">[</span><span class="n">i</span><span class="p">]</span>
+
+	<span class="k">return</span> <span class="n">blobs_df</span></div>
+
+<div class="viewcode-block" id="bin_df"><a class="viewcode-back" href="../../../modules.html#bamboo.util.bin_df">[docs]</a><span class="k">def</span> <span class="nf">bin_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">bin_col</span><span class="p">,</span> <span class="n">nbins</span><span class="o">=</span><span class="mi">10</span><span class="p">):</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Add &#39;category&#39; column to dataframe by binning w.r.t bin_col</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+
+<span class="sd">	df : DataFrame</span>
+<span class="sd">		DataFrame</span>
+
+<span class="sd">	bin_col : str,</span>
+<span class="sd">		column in df to bin by</span>
+
+<span class="sd">	nbins : int,</span>
+<span class="sd">		number of bins</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="n">df</span><span class="p">[</span><span class="s1">&#39;category&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">cut</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">bin_col</span><span class="p">],</span> <span class="n">nbins</span><span class="p">)</span>
+
+	<span class="n">r_min</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">bin_col</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span><span class="o">.</span><span class="n">min</span><span class="p">()</span>
+	<span class="n">r_max</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">bin_col</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
+	<span class="n">bin_size</span> <span class="o">=</span> <span class="p">(</span><span class="n">r_max</span><span class="o">-</span><span class="n">r_min</span><span class="p">)</span><span class="o">/</span><span class="n">nbins</span>
+	<span class="n">hist</span><span class="p">,</span> <span class="n">bin_edges</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">histogram</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">bin_col</span><span class="p">],</span> <span class="n">nbins</span><span class="p">)</span> <span class="c1">#get bin edges</span>
+	<span class="n">bin_centers</span> <span class="o">=</span> <span class="mf">0.5</span><span class="o">*</span><span class="p">(</span><span class="n">bin_edges</span><span class="p">[</span><span class="mi">1</span><span class="p">:]</span> <span class="o">+</span> <span class="n">bin_edges</span><span class="p">[:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span> <span class="c1">#get bin centers</span>
+
+	<span class="k">return</span> <span class="n">bin_centers</span><span class="p">,</span> <span class="n">df</span></div>
+
+<div class="viewcode-block" id="norm_df"><a class="viewcode-back" href="../../../modules.html#bamboo.util.norm_df">[docs]</a><span class="k">def</span> <span class="nf">norm_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">col</span><span class="p">,</span> <span class="n">col_arr</span><span class="p">,</span> <span class="n">row_props</span><span class="p">,</span> <span class="n">nest_col</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Normalize column(s) of a dataframe based on the value of a particular column</span>
+<span class="sd">	at a particular row</span>
+
+
+<span class="sd">	Pseudo code</span>
+<span class="sd">	----------</span>
+
+<span class="sd">	0. Divide the dataframe based on unique values of a column (if desired)</span>
+<span class="sd">	1. Extract the denominator for normalization</span>
+<span class="sd">	2. Divide column(s) by normalization denominator</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+
+<span class="sd">	col : array_like,</span>
+<span class="sd">		column(s) in DataFrame to be normalized</span>
+
+<span class="sd">	row_props : dict,</span>
+<span class="sd">		dictionary of conditions each key being a column and each value</span>
+<span class="sd">		being the value of that column</span>
+
+<span class="sd">	Example</span>
+<span class="sd">	----------</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="k">if</span> <span class="n">nest_col</span><span class="p">:</span>
+		<span class="n">df_arr</span> <span class="o">=</span> <span class="n">nest_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">cat_cols</span><span class="o">=</span><span class="p">[</span><span class="n">nest_col</span><span class="p">])</span>
+
+	<span class="n">norm_df_arr</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="k">for</span> <span class="n">this_df</span> <span class="ow">in</span> <span class="n">df_arr</span><span class="p">:</span>
+
+		<span class="n">tmp_df</span> <span class="o">=</span> <span class="n">this_df</span><span class="p">[</span><span class="n">row_props</span><span class="o">.</span><span class="n">keys</span><span class="p">()]</span>
+		<span class="n">mask</span> <span class="o">=</span> <span class="n">tmp_df</span><span class="o">.</span><span class="n">isin</span><span class="p">(</span><span class="n">row_props</span><span class="p">)</span>
+		<span class="n">tmp_df</span> <span class="o">=</span> <span class="n">tmp_df</span><span class="p">[</span><span class="n">mask</span><span class="p">]</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+		<span class="n">row</span> <span class="o">=</span> <span class="n">tmp_df</span><span class="o">.</span><span class="n">index</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+
+		<span class="n">norm_denom</span> <span class="o">=</span> <span class="n">this_df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">row</span><span class="p">,</span> <span class="n">col</span><span class="p">]</span>
+		<span class="n">this_df</span><span class="p">[</span><span class="n">col_arr</span><span class="p">]</span> <span class="o">=</span> <span class="n">this_df</span><span class="p">[</span><span class="n">col_arr</span><span class="p">]</span><span class="o">/</span><span class="n">norm_denom</span>
+		<span class="n">norm_df_arr</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">this_df</span><span class="p">)</span>
+
+	<span class="n">df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">(</span><span class="n">norm_df_arr</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">df</span></div>
+
+
+<div class="viewcode-block" id="nest_df"><a class="viewcode-back" href="../../../modules.html#bamboo.util.nest_df">[docs]</a><span class="k">def</span> <span class="nf">nest_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">cat_cols</span><span class="p">,</span> <span class="n">count</span><span class="o">=-</span><span class="mi">1</span><span class="p">,</span> <span class="n">data_col</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Divide a dataframe based on an array of categorical columns, recursively</span>
+<span class="sd">	The recursion counter is used to index an array of categorical columns.</span>
+<span class="sd">	Each level of the nested array comes from a different category</span>
+
+<span class="sd">	Pseudo code</span>
+<span class="sd">	----------</span>
+<span class="sd">	1. Check if the max recursion depth has been met</span>
+<span class="sd">	2. Increment recursion counter</span>
+<span class="sd">	2. Iterate over dataframes and replace them with arrays of dataframes</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	ax : object</span>
+<span class="sd">		matplotlib axis.</span>
+
+<span class="sd">	df : DataFrame</span>
+<span class="sd">		DataFrame that contains cols</span>
+
+<span class="sd">	cols : list,</span>
+<span class="sd">		a list of columns, each of which is a category to divide the data on</span>
+
+<span class="sd">	Example</span>
+<span class="sd">	----------</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="n">depth</span> <span class="o">=</span> <span class="nb">len</span><span class="p">(</span><span class="n">cat_cols</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span>
+
+	<span class="k">def</span> <span class="nf">do_nest</span><span class="p">(</span><span class="n">df_arr</span><span class="p">,</span> <span class="n">cat_cols</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">,</span> <span class="n">data_col</span><span class="o">=</span><span class="n">data_col</span><span class="p">):</span>
+
+		<span class="k">if</span> <span class="n">count</span> <span class="o">==</span> <span class="n">depth</span><span class="p">:</span>
+			<span class="k">if</span> <span class="n">data_col</span><span class="p">:</span>
+				<span class="k">return</span> <span class="p">[</span><span class="nb">list</span><span class="p">(</span><span class="n">df</span><span class="p">[</span><span class="n">data_col</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">())[</span><span class="mi">0</span><span class="p">]</span> <span class="k">for</span> <span class="n">df</span> <span class="ow">in</span> <span class="n">df_arr</span><span class="p">]</span>
+			<span class="k">else</span><span class="p">:</span>
+				<span class="k">return</span> <span class="n">df_arr</span>
+
+		<span class="n">count</span><span class="o">+=</span><span class="mi">1</span>
+		<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">df</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">df_arr</span><span class="p">):</span>
+			<span class="n">df_arr</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">do_nest</span><span class="p">([</span><span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">cat_cols</span><span class="p">[</span><span class="n">count</span><span class="p">]]</span> <span class="o">==</span> <span class="n">cat</span><span class="p">]</span>
+							<span class="k">for</span> <span class="n">cat</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="n">cat_cols</span><span class="p">[</span><span class="n">count</span><span class="p">]]</span><span class="o">.</span><span class="n">unique</span><span class="p">()],</span>
+							<span class="n">cat_cols</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">count</span><span class="p">,</span> <span class="n">data_col</span><span class="p">)</span>
+
+		<span class="k">return</span> <span class="n">df_arr</span>
+
+	<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">sort_values</span><span class="p">(</span><span class="n">cat_cols</span><span class="p">)</span>
+	<span class="n">df_arr</span> <span class="o">=</span> <span class="n">do_nest</span><span class="p">([</span><span class="n">df</span><span class="p">],</span> <span class="n">cat_cols</span><span class="p">,</span> <span class="n">depth</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="n">count</span><span class="p">,</span> <span class="n">data_col</span><span class="o">=</span><span class="n">data_col</span><span class="p">)</span>
+	<span class="n">df_arr</span> <span class="o">=</span> <span class="n">df_arr</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+
+	<span class="k">return</span> <span class="n">df_arr</span></div>
+
+<div class="viewcode-block" id="get_pval_df"><a class="viewcode-back" href="../../../modules.html#bamboo.util.get_pval_df">[docs]</a><span class="k">def</span> <span class="nf">get_pval_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">data_col</span><span class="p">,</span> <span class="n">cat_col</span><span class="p">):</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Get a correlation-style matrix of p-values on data_col by dividing df</span>
+<span class="sd">	by cat_col. Useful when there are several unique labels</span>
+<span class="sd">	for a single category (cat_col)</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+
+<span class="sd">	df : DataFrame</span>
+<span class="sd">		DataFrame containing data_col and cat_col columns</span>
+<span class="sd">	data_col : str,</span>
+<span class="sd">		column that should be used to calculate the p-value i.e.</span>
+<span class="sd">		the variable of statistical interest</span>
+<span class="sd">	cat_col : str,</span>
+<span class="sd">		column that should be used for dividing up the dataframe.</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="n">p_val_arr</span> <span class="o">=</span> <span class="p">[]</span>
+	<span class="n">cats</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">cat_col</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+	<span class="n">cats_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">cats</span><span class="p">)</span>
+	<span class="n">p_val_df</span> <span class="o">=</span> <span class="n">cats_df</span><span class="o">.</span><span class="n">transpose</span><span class="p">()</span><span class="o">.</span><span class="n">join</span><span class="p">(</span><span class="n">cats_df</span><span class="p">,</span> <span class="n">how</span><span class="o">=</span><span class="s1">&#39;outer&#39;</span><span class="p">)</span>
+
+	<span class="k">for</span> <span class="n">cat1</span> <span class="ow">in</span> <span class="n">cats_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+		<span class="k">for</span> <span class="n">cat2</span> <span class="ow">in</span> <span class="n">cats_df</span><span class="o">.</span><span class="n">columns</span><span class="p">:</span>
+			<span class="n">df1</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">cat_col</span><span class="p">]</span><span class="o">==</span><span class="n">cat1</span><span class="p">]</span>
+			<span class="n">df2</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">cat_col</span><span class="p">]</span><span class="o">==</span><span class="n">cat2</span><span class="p">]</span>
+			<span class="n">t_test</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">ttest_ind</span><span class="p">(</span><span class="n">df1</span><span class="p">[</span><span class="n">data_col</span><span class="p">],</span> <span class="n">df2</span><span class="p">[</span><span class="n">data_col</span><span class="p">])</span>
+			<span class="n">p_val_df</span><span class="p">[</span><span class="n">cat1</span><span class="p">][</span><span class="n">cat2</span><span class="p">]</span> <span class="o">=</span> <span class="n">t_test</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+	<span class="k">return</span> <span class="n">p_val_df</span></div>
+
+<div class="viewcode-block" id="get_binary_pval"><a class="viewcode-back" href="../../../modules.html#bamboo.util.get_binary_pval">[docs]</a><span class="k">def</span> <span class="nf">get_binary_pval</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">cat_col</span><span class="p">,</span> <span class="n">data_col</span><span class="p">):</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">	Calculates the p-value for a pair of labels for a particular category</span>
+<span class="sd">	e.g. the diffusion coefficient for particles inside and outside the nucleus</span>
+
+<span class="sd">	Pseudo code</span>
+<span class="sd">	----------</span>
+
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	ax : object</span>
+<span class="sd">		matplotlib axis.</span>
+
+<span class="sd">	df : DataFrame</span>
+<span class="sd">		DataFrame that contains cols</span>
+
+<span class="sd">	cols : list,</span>
+<span class="sd">		a list of columns, each of which is a category to divide the data on</span>
+
+<span class="sd">	Example</span>
+<span class="sd">	----------</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="k">if</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+		<span class="k">return</span> <span class="p">[]</span>
+
+	<span class="k">try</span><span class="p">:</span>
+		<span class="n">cat1</span><span class="p">,</span> <span class="n">cat2</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">cat_col</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+		<span class="n">df1</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">cat_col</span><span class="p">]</span><span class="o">==</span><span class="n">cat1</span><span class="p">]</span>
+		<span class="n">df2</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">cat_col</span><span class="p">]</span><span class="o">==</span><span class="n">cat2</span><span class="p">]</span>
+		<span class="n">t_test</span> <span class="o">=</span> <span class="n">stats</span><span class="o">.</span><span class="n">ttest_ind</span><span class="p">(</span><span class="n">df1</span><span class="p">[</span><span class="n">data_col</span><span class="p">],</span> <span class="n">df2</span><span class="p">[</span><span class="n">data_col</span><span class="p">])</span>
+		<span class="k">return</span> <span class="n">t_test</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+	<span class="k">except</span><span class="p">:</span>
+		<span class="nb">print</span><span class="p">(</span><span class="s2">&quot;The category &#39;</span><span class="si">%s</span><span class="s2">&#39; is not binary&quot;</span> <span class="o">%</span> <span class="nb">str</span><span class="p">(</span><span class="n">cat_col</span><span class="p">))</span>
+		<span class="k">return</span></div>
+
+<div class="viewcode-block" id="df_to_pval"><a class="viewcode-back" href="../../../modules.html#bamboo.util.df_to_pval">[docs]</a><span class="k">def</span> <span class="nf">df_to_pval</span><span class="p">(</span><span class="n">df_arr</span><span class="p">,</span> <span class="n">cat_col</span><span class="p">,</span> <span class="n">data_col</span><span class="p">):</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">	Searches recursively for DataFrames and calculates the p-value</span>
+<span class="sd">	for each DataFrame found by dividing it on cat_col. Useful when</span>
+<span class="sd">	the category is binary. This function reduces to the simplest</span>
+<span class="sd">	(non-nested) case as well.</span>
+
+<span class="sd">	Pseudo code</span>
+<span class="sd">	----------</span>
+
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	ax : object</span>
+<span class="sd">		matplotlib axis.</span>
+
+<span class="sd">	df : DataFrame</span>
+<span class="sd">		DataFrame that contains cols</span>
+
+<span class="sd">	cols : list,</span>
+<span class="sd">		a list of columns, each of which is a category to divide the data on</span>
+
+<span class="sd">	Example</span>
+<span class="sd">	----------</span>
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="k">def</span> <span class="nf">recurse</span><span class="p">(</span><span class="n">df_arr</span><span class="p">,</span> <span class="n">cat_col</span><span class="p">,</span> <span class="n">data_col</span><span class="p">):</span>
+
+		<span class="c1">#termination statement</span>
+		<span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df_arr</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+			<span class="n">p_val</span> <span class="o">=</span> <span class="n">get_binary_pval</span><span class="p">(</span><span class="n">df_arr</span><span class="p">,</span> <span class="n">cat_col</span><span class="p">,</span> <span class="n">data_col</span><span class="p">)</span>
+			<span class="k">return</span> <span class="n">p_val</span>
+
+		<span class="n">p_val_arr</span> <span class="o">=</span> <span class="p">[</span><span class="n">recurse</span><span class="p">(</span><span class="n">arr</span><span class="p">,</span> <span class="n">cat_col</span><span class="p">,</span> <span class="n">data_col</span><span class="p">)</span> <span class="k">for</span> <span class="n">arr</span> <span class="ow">in</span> <span class="n">df_arr</span><span class="p">]</span>
+
+		<span class="k">return</span> <span class="n">p_val_arr</span>
+
+	<span class="k">if</span> <span class="ow">not</span> <span class="nb">isinstance</span><span class="p">(</span><span class="n">df_arr</span><span class="p">,</span> <span class="nb">list</span><span class="p">):</span>
+		<span class="n">df_arr</span> <span class="o">=</span> <span class="p">[</span><span class="n">df</span><span class="p">]</span>
+
+	<span class="n">p_val_arr</span> <span class="o">=</span> <span class="n">recurse</span><span class="p">(</span><span class="n">df_arr</span><span class="p">,</span> <span class="n">cat_col</span><span class="o">=</span><span class="n">cat_col</span><span class="p">,</span>
+						<span class="n">data_col</span><span class="o">=</span><span class="n">data_col</span><span class="p">)</span>
+	<span class="k">return</span> <span class="n">p_val_arr</span></div>
+
+<div class="viewcode-block" id="get_frac_df"><a class="viewcode-back" href="../../../modules.html#bamboo.util.get_frac_df">[docs]</a><span class="k">def</span> <span class="nf">get_frac_df</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">frac_col</span><span class="p">,</span> <span class="n">group_cols</span><span class="p">,</span> <span class="n">map_df</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">map_col</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="sd">	Transforms a DataFrame by calculating the fraction of records with</span>
+<span class="sd">	a particular set of column values.</span>
+
+<span class="sd">	Pseudocode</span>
+<span class="sd">	----------</span>
+<span class="sd">	1. Group by group_cols</span>
+<span class="sd">	2. Count the number of elements in each group, filling with zeros</span>
+<span class="sd">	   when necessary</span>
+<span class="sd">	3. Restore a column lost by grouping via &#39;mapping&#39;, if desired</span>
+<span class="sd">	4. Compute the fraction dataframe</span>
+
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+
+<span class="sd">	df : DataFrame</span>
+<span class="sd">		DataFrame containing &#39;label&#39;, &#39;prefix&#39;, &#39;region_type&#39;, and &#39;count&#39; columns</span>
+
+<span class="sd">	group_cols : list,</span>
+<span class="sd">		columns to group the dataframe by. the size of each group is used</span>
+
+<span class="sd">	map_df : dataFrame, optional</span>
+<span class="sd">		two-column dataframe that maps a column in group_cols to a column</span>
+<span class="sd">		lost by grouping</span>
+
+<span class="sd">	map_col : str, optional</span>
+<span class="sd">		column that should be used for dividing up the dataframe.</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="c1"># &quot;&quot;&quot;</span>
+	<span class="c1"># ~~~~~~~~~~~Group by and get size of groups~~~~~~~~~~~~~</span>
+	<span class="c1"># &quot;&quot;&quot;</span>
+
+	<span class="n">df_grp</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">groupby</span><span class="p">(</span><span class="n">group_cols</span><span class="p">)</span>
+	<span class="n">df</span> <span class="o">=</span> <span class="n">df_grp</span><span class="o">.</span><span class="n">size</span><span class="p">()</span><span class="o">.</span><span class="n">unstack</span><span class="p">(</span><span class="n">fill_value</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span><span class="o">.</span><span class="n">stack</span><span class="p">()</span> <span class="c1">#fill with zero</span>
+	<span class="n">df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">reset_index</span><span class="p">(</span><span class="n">name</span><span class="o">=</span><span class="s2">&quot;count&quot;</span><span class="p">)</span>
+
+	<span class="c1"># &quot;&quot;&quot;</span>
+	<span class="c1"># ~~~~~~~~~~~Map after group_cols, if desired~~~~~~~~~~~~~~</span>
+	<span class="c1"># &quot;&quot;&quot;</span>
+
+	<span class="k">if</span> <span class="n">map_df</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+		<span class="k">try</span><span class="p">:</span>
+			<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">map_df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
+				<span class="n">label</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">];</span> <span class="n">value</span> <span class="o">=</span> <span class="n">row</span><span class="p">[</span><span class="n">map_col</span><span class="p">]</span>
+				<span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">label</span><span class="p">,</span> <span class="n">map_col</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span>
+		<span class="k">except</span><span class="p">:</span>
+			<span class="nb">print</span><span class="p">(</span><span class="s1">&#39;Check map_df format (see doc for help)&#39;</span><span class="p">)</span>
+			<span class="k">return</span>
+
+
+	<span class="c1"># &quot;&quot;&quot;</span>
+	<span class="c1"># ~~~~~~~~~~~Transform to fraction dataframe~~~~~~~~~~~~~</span>
+	<span class="c1"># &quot;&quot;&quot;</span>
+
+	<span class="n">frac_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="n">df</span><span class="o">.</span><span class="n">columns</span><span class="p">)</span>
+
+	<span class="k">for</span> <span class="n">value</span> <span class="ow">in</span> <span class="n">df</span><span class="p">[</span><span class="n">frac_col</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">():</span>
+
+		<span class="n">this_df</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">df</span><span class="p">[</span><span class="n">frac_col</span><span class="p">]</span> <span class="o">==</span> <span class="n">value</span><span class="p">]</span>
+		<span class="n">counts</span> <span class="o">=</span> <span class="n">this_df</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()</span>
+		<span class="n">this_df</span><span class="p">[</span><span class="s1">&#39;fracs&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">counts</span><span class="o">/</span><span class="nb">sum</span><span class="p">(</span><span class="n">counts</span><span class="p">)</span>
+		<span class="n">frac_df</span> <span class="o">=</span> <span class="n">frac_df</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">this_df</span><span class="p">)</span>
+
+	<span class="k">del</span> <span class="n">frac_df</span><span class="p">[</span><span class="s1">&#39;count&#39;</span><span class="p">]</span>
+
+	<span class="k">return</span> <span class="n">frac_df</span></div>
+
+<div class="viewcode-block" id="merge_rna_dfs"><a class="viewcode-back" href="../../../modules.html#bamboo.util.merge_rna_dfs">[docs]</a><span class="k">def</span> <span class="nf">merge_rna_dfs</span><span class="p">(</span><span class="n">input_dir</span><span class="p">,</span> <span class="n">prefixes</span><span class="p">):</span>
+
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Used for rna imaging experiments (not time-lapse compatible)</span>
+
+<span class="sd">	Parameters</span>
+<span class="sd">	----------</span>
+<span class="sd">	files: list</span>
+<span class="sd">		list of physData files to be merged</span>
+
+<span class="sd">	Returns</span>
+<span class="sd">	-------</span>
+<span class="sd">	merged_df: DataFrame</span>
+<span class="sd">		DataFrame after merging</span>
+
+<span class="sd">	&quot;&quot;&quot;</span>
+
+	<span class="n">merged_blobs_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[])</span>
+	<span class="n">merged_int_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">[])</span>
+
+	<span class="k">for</span> <span class="n">prefix</span> <span class="ow">in</span> <span class="n">prefixes</span><span class="p">:</span>
+
+		<span class="nb">str</span> <span class="o">=</span> <span class="n">input_dir</span> <span class="o">+</span> <span class="n">prefix</span>
+		<span class="n">blobs_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="nb">str</span>  <span class="o">+</span> <span class="s1">&#39;_hla-fittData-lbld.csv&#39;</span><span class="p">,</span> <span class="n">index_col</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+		<span class="n">int_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">read_csv</span><span class="p">(</span><span class="nb">str</span> <span class="o">+</span> <span class="s1">&#39;_ins-gluc-intensity-lbld.csv&#39;</span><span class="p">)</span>
+		<span class="n">blobs_df</span> <span class="o">=</span> <span class="n">blobs_df</span><span class="o">.</span><span class="n">rename</span><span class="p">(</span><span class="n">columns</span><span class="o">=</span><span class="p">{</span><span class="s1">&#39;region_label&#39;</span><span class="p">:</span> <span class="s1">&#39;label&#39;</span><span class="p">})</span>
+
+		<span class="c1"># &quot;&quot;&quot;</span>
+		<span class="c1"># ~~~~~~~~~~~Make sure there is only one frame~~~~~~~~~~~~~~</span>
+		<span class="c1"># &quot;&quot;&quot;</span>
+
+		<span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">blobs_df</span><span class="p">[</span><span class="s1">&#39;frame&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">())</span> <span class="o">&gt;</span> <span class="mi">1</span><span class="p">:</span>
+			<span class="n">blobs_df</span> <span class="o">=</span> <span class="n">blobs_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">blobs_df</span><span class="p">[</span><span class="s1">&#39;frame&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">]</span>
+
+		<span class="c1"># &quot;&quot;&quot;</span>
+		<span class="c1"># ~~~~~~~~~~~Assign cell type from int_df to detections~~~~~~~~~~~~~~</span>
+		<span class="c1"># &quot;&quot;&quot;</span>
+
+		<span class="n">labels</span> <span class="o">=</span> <span class="n">int_df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">unique</span><span class="p">()</span>
+		<span class="k">for</span> <span class="n">label</span> <span class="ow">in</span> <span class="n">labels</span><span class="p">:</span>
+			<span class="n">cell_type</span> <span class="o">=</span> <span class="n">int_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">int_df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">label</span><span class="p">,</span> \
+								   <span class="s1">&#39;cell_type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">to_numpy</span><span class="p">()[</span><span class="mi">0</span><span class="p">]</span>
+			<span class="n">blobs_df</span><span class="o">.</span><span class="n">loc</span><span class="p">[</span><span class="n">blobs_df</span><span class="p">[</span><span class="s1">&#39;label&#39;</span><span class="p">]</span> <span class="o">==</span> <span class="n">label</span><span class="p">,</span> <span class="s1">&#39;cell_type&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">cell_type</span>
+
+		<span class="c1"># &quot;&quot;&quot;</span>
+		<span class="c1"># ~~~~~~~~~~~Filter detections in cells not in int_df~~~~~~~~~~~~~~</span>
+		<span class="c1"># &quot;&quot;&quot;</span>
+
+		<span class="n">blobs_df</span><span class="p">[</span><span class="s1">&#39;cell_type&#39;</span><span class="p">]</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;&#39;</span><span class="p">,</span> <span class="n">np</span><span class="o">.</span><span class="n">nan</span><span class="p">,</span> <span class="n">inplace</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+		<span class="n">blobs_df</span> <span class="o">=</span> <span class="n">blobs_df</span><span class="o">.</span><span class="n">dropna</span><span class="p">()</span>
+
+		<span class="c1"># &quot;&quot;&quot;</span>
+		<span class="c1"># ~~~~~~~~~~~Assign prefix and concatenate~~~~~~~~~~~~~~</span>
+		<span class="c1"># &quot;&quot;&quot;</span>
+
+		<span class="n">blobs_df</span> <span class="o">=</span> <span class="n">blobs_df</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">)</span>
+		<span class="n">int_df</span> <span class="o">=</span> <span class="n">int_df</span><span class="o">.</span><span class="n">assign</span><span class="p">(</span><span class="n">prefix</span><span class="o">=</span><span class="n">prefix</span><span class="p">)</span>
+
+		<span class="n">merged_blobs_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">merged_blobs_df</span><span class="p">,</span> <span class="n">blobs_df</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> \
+									<span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+		<span class="n">merged_int_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">concat</span><span class="p">([</span><span class="n">merged_int_df</span><span class="p">,</span> <span class="n">int_df</span><span class="p">],</span> <span class="n">axis</span><span class="o">=</span><span class="mi">0</span><span class="p">,</span> \
+		 							<span class="n">ignore_index</span><span class="o">=</span><span class="kc">True</span><span class="p">)</span>
+
+	<span class="k">return</span> <span class="n">merged_blobs_df</span><span class="p">,</span> <span class="n">merged_int_df</span></div>
+</pre></div>
+
+           </div>
+           
+          </div>
+          <footer>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Clayton W. Seitz
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>
