@@ -1,5 +1,3 @@
-# bamboo
-
 Bamboo standardizes the acquisition, storage, and presentation of data generated in biophysical research. 
 
  Acquisition
