@@ -1,4 +1,5 @@
 Bamboo standardizes the acquisition, storage, and presentation of data generated in biophysical research. 
+It does NOT facilitate the *analysis* of data in an effort to be application-independent.
 
  Acquisition
  -----------
