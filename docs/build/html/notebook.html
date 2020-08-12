@@ -1,0 +1,301 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8">
+  
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  
+  <title>Managing the bamboo notebook &mdash; bamboo  documentation</title>
+  
+
+  
+  <link rel="stylesheet" href="_static/css/theme.css" type="text/css" />
+  <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+
+  
+  
+  
+  
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+    
+      <script type="text/javascript" id="documentation_options" data-url_root="./" src="_static/documentation_options.js"></script>
+        <script src="_static/jquery.js"></script>
+        <script src="_static/underscore.js"></script>
+        <script src="_static/doctools.js"></script>
+        <script src="_static/language_data.js"></script>
+    
+    <script type="text/javascript" src="_static/js/theme.js"></script>
+
+    
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="Modules" href="modules.html" />
+    <link rel="prev" title="Starting a bamboo project" href="project.html" /> 
+</head>
+
+<body class="wy-body-for-nav">
+
+   
+  <div class="wy-grid-for-nav">
+    
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+          
+
+          
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> bamboo
+          
+
+          
+          </a>
+
+          
+            
+            
+              <div class="version">
+                0.1
+              </div>
+            
+          
+
+          
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+
+          
+        </div>
+
+        
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="main navigation">
+          
+            
+            
+              
+            
+            
+              <ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project.html">Starting a bamboo project</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Managing the bamboo notebook</a></li>
+<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
+<li class="toctree-l1"><a class="reference internal" href="format_ax.html">Formatting the axis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="canvas.html">Using Canvas for PDFs</a></li>
+</ul>
+
+            
+          
+        </div>
+        
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+
+      
+      <nav class="wy-nav-top" aria-label="top navigation">
+        
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">bamboo</a>
+        
+      </nav>
+
+
+      <div class="wy-nav-content">
+        
+        <div class="rst-content">
+        
+          
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div role="navigation" aria-label="breadcrumbs navigation">
+
+  <ul class="wy-breadcrumbs">
+    
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
+        
+      <li>Managing the bamboo notebook</li>
+    
+    
+      <li class="wy-breadcrumbs-aside">
+        
+            
+            <a href="_sources/notebook.rst.txt" rel="nofollow"> View page source</a>
+          
+        
+      </li>
+    
+  </ul>
+
+  
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+            
+  <div class="section" id="managing-the-bamboo-notebook">
+<h1>Managing the bamboo notebook<a class="headerlink" href="#managing-the-bamboo-notebook" title="Permalink to this headline">¶</a></h1>
+<p>The bamboo notebook is basically a much better looking and smarter version of
+a paper lab notebook. It is in chronological order and is more aware of the
+rest of the project than pen and paper so you don’t have to be.</p>
+<p>When you do an experiment, you generate some data, hopefully, and you want
+to log how you generated it and later how you analyzed it. For the former,
+we take a batch of files stored at dir, provide some experimental metadata
+and where to store it and call add_data()</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">bamboo.notebook</span> <span class="kn">import</span> <span class="n">add_data</span>
+
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+
+          <span class="s1">&#39;project_path&#39;</span><span class="p">:</span> <span class="s1">&#39;/path/to/project&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/path/to/files/&#39;</span>
+          <span class="s1">&#39;param_file&#39;</span><span class="p">:</span> <span class="s1">&#39;/path/to/param_file.txt&#39;</span>
+          <span class="s1">&#39;exp_name&#39;</span> <span class="p">:</span> <span class="s1">&#39;sample_exp&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;date&#39;</span> <span class="p">:</span> <span class="s1">&#39;200810&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;storage&#39;</span> <span class="p">:</span> <span class="s1">&#39;both&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;rename&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
+
+         <span class="p">}</span>
+
+<span class="n">add_data</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This operation will log an entry in the notebook and move data stored
+at /path/to/files into /path/to/project/data and (optionally) rename all files
+according to the convention specified in the project metadata.
+Moving on, for the analysis portion, we provide a path to a CSV file containing
+a key-value pair for each analysis parameter and the parent experiment name:</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">bamboo.notebook</span> <span class="kn">import</span> <span class="n">add_analysis</span>
+
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+
+          <span class="s1">&#39;project_path&#39;</span><span class="p">:</span> <span class="s1">&#39;/path/to/project&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;param_file&#39;</span><span class="p">:</span> <span class="s1">&#39;/path/to/param_file.txt&#39;</span>
+          <span class="s1">&#39;exp_name&#39;</span> <span class="p">:</span> <span class="s1">&#39;sample_exp&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;date&#39;</span> <span class="p">:</span> <span class="s1">&#39;200810&#39;</span>
+          <span class="s1">&#39;storage&#39;</span> <span class="p">:</span> <span class="s1">&#39;both&#39;</span>
+
+         <span class="p">}</span>
+
+<span class="n">add_analysis</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</pre></div>
+</div>
+<p>This operation will also add an entry in the notebook.
+By providing the experiment name for this analysis, we link these in
+bamboo’s backend representation of the project. Note that it is possible to
+pass an array of experiment names (provided they exist) in the case that
+we decided to merge some data from several experiments for a single analysis.</p>
+<p>Next, we will try out a more advanced usage of add_analysis() that utilizes
+the Canvas object to take the data we generated in our analysis, plot it, and
+add those plots to a custom or default template.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">bamboo.notebook</span> <span class="kn">import</span> <span class="n">add_analysis</span>
+<span class="kn">from</span> <span class="nn">bamboo.objects</span> <span class="kn">import</span> <span class="n">Canvas</span>
+
+<span class="n">author</span> <span class="o">=</span> <span class="s1">&#39;Author&#39;</span><span class="p">;</span> <span class="n">exp_name</span> <span class="o">=</span> <span class="s1">&#39;Experiment&#39;</span>
+<span class="n">template</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+            <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+            <span class="p">[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+            <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+            <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
+            <span class="p">[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">]]</span>
+
+<span class="n">canvas</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="n">template</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="n">author</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">exp_name</span><span class="p">)</span>
+<span class="n">canvas</span><span class="o">.</span><span class="n">set_plots</span><span class="p">([</span><span class="n">plot1</span><span class="p">,</span> <span class="n">plot2</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span>
+
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+
+          <span class="s1">&#39;project_path&#39;</span><span class="p">:</span> <span class="s1">&#39;/path/to/project&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;param_file&#39;</span><span class="p">:</span> <span class="s1">&#39;/path/to/param_file.txt&#39;</span>
+          <span class="s1">&#39;exp_name&#39;</span> <span class="p">:</span> <span class="s1">&#39;sample_exp&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;date&#39;</span> <span class="p">:</span> <span class="s1">&#39;200810&#39;</span>
+          <span class="s1">&#39;storage&#39;</span> <span class="p">:</span> <span class="s1">&#39;both&#39;</span>
+          <span class="s1">&#39;canvas&#39;</span> <span class="p">:</span> <span class="n">canvas</span><span class="p">,</span>
+
+         <span class="p">}</span>
+
+<span class="n">add_analysis</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+
+
+           </div>
+           
+          </div>
+          <footer>
+  
+    <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
+      
+        <a href="modules.html" class="btn btn-neutral float-right" title="Modules" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+      
+      
+        <a href="project.html" class="btn btn-neutral float-left" title="Starting a bamboo project" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+      
+    </div>
+  
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>
+        
+        &copy; Copyright 2020, Clayton W. Seitz
+
+    </p>
+  </div>
+    
+    
+    
+    Built with <a href="http://sphinx-doc.org/">Sphinx</a> using a
+    
+    <a href="https://github.com/rtfd/sphinx_rtd_theme">theme</a>
+    
+    provided by <a href="https://readthedocs.org">Read the Docs</a>. 
+
+</footer>
+
+        </div>
+      </div>
+
+    </section>
+
+  </div>
+  
+
+  <script type="text/javascript">
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script>
+
+  
+  
+    
+   
+
+</body>
+</html>

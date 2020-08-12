@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>bamboo &mdash; bamboo  documentation</title>
+  <title>Starting a bamboo project &mdash; bamboo  documentation</title>
   
 
   
@@ -36,7 +36,8 @@
     
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
-    <link rel="next" title="Installation" href="install.html" /> 
+    <link rel="next" title="Managing the bamboo notebook" href="notebook.html" />
+    <link rel="prev" title="Installation" href="install.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -50,7 +51,7 @@
           
 
           
-            <a href="#" class="icon icon-home" alt="Documentation Home"> bamboo
+            <a href="index.html" class="icon icon-home" alt="Documentation Home"> bamboo
           
 
           
@@ -85,9 +86,9 @@
               
             
             
-              <ul>
+              <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="project.html">Starting a bamboo project</a></li>
+<li class="toctree-l1 current"><a class="current reference internal" href="#">Starting a bamboo project</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebook.html">Managing the bamboo notebook</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="format_ax.html">Formatting the axis</a></li>
@@ -107,7 +108,7 @@
       <nav class="wy-nav-top" aria-label="top navigation">
         
           <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
-          <a href="#">bamboo</a>
+          <a href="index.html">bamboo</a>
         
       </nav>
 
@@ -136,15 +137,15 @@
 
   <ul class="wy-breadcrumbs">
     
-      <li><a href="#" class="icon icon-home"></a> &raquo;</li>
+      <li><a href="index.html" class="icon icon-home"></a> &raquo;</li>
         
-      <li>bamboo</li>
+      <li>Starting a bamboo project</li>
     
     
       <li class="wy-breadcrumbs-aside">
         
             
-            <a href="_sources/index.rst.txt" rel="nofollow"> View page source</a>
+            <a href="_sources/project.rst.txt" rel="nofollow"> View page source</a>
           
         
       </li>
@@ -157,50 +158,41 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <div class="section" id="bamboo">
-<h1>bamboo<a class="headerlink" href="#bamboo" title="Permalink to this headline">¶</a></h1>
-<p>Bamboo standardizes the organization, acquisition, storage, and
-presentation of data generated in biophysical research.
-It is meant to sandwich a data analysis pipeline,
-logging and storing experimental metadata as well as results of data analysis.
-The philosophy of the library is to streamline file naming, logging, and
-storage/retrieval so focus can be given to more important things.</p>
-<img alt="_images/lifecycle.png" src="_images/lifecycle.png" />
-<div class="section" id="framework">
-<h2>Framework<a class="headerlink" href="#framework" title="Permalink to this headline">¶</a></h2>
+  <div class="section" id="starting-a-bamboo-project">
+<h1>Starting a bamboo project<a class="headerlink" href="#starting-a-bamboo-project" title="Permalink to this headline">¶</a></h1>
+<p>The first step in starting a new project in bamboo involves creation of the
+<em>project tree</em>. The project tree looks like this:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span>project
+├── data
+├── analysis
+├── pub
+└── notebook.pdf
+</pre></div>
 </div>
-<div class="section" id="the-experiment">
-<h2>The Experiment<a class="headerlink" href="#the-experiment" title="Permalink to this headline">¶</a></h2>
-<p>Lab notebook for logging protocols, experimental parameters, etc.
-Design a template that aggregates image data, figures, plots, experimental
-parameters, etc.</p>
-</div>
-<div class="section" id="data-analysis">
-<h2>Data Analysis<a class="headerlink" href="#data-analysis" title="Permalink to this headline">¶</a></h2>
-<p>This is the part where bamboo takes the backseat. Use whatever image analysis
-or raw data analysis techniques you need to, organize everything in an excel
-sheet or csv and move on to the next stage: presentation/storage.</p>
-</div>
-<div class="section" id="presentaton-storage">
-<h2>Presentaton/Storage<a class="headerlink" href="#presentaton-storage" title="Permalink to this headline">¶</a></h2>
-<p>This is the terminal end of a project or iteration. Use built-in figure
-templates and matplotlib wrappers to create publication-quality plots or output
-the raw data to a database. Importantly, the ‘database’ may not be an RDBMS
-or the-like. Bamboo wraps the rclone program to sync data, pdfs, etc. to a
-cloud storage provider such as Box or Google Drive, if desired.</p>
-</div>
-<div class="section" id="contents">
-<h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="project.html">Starting a bamboo project</a></li>
-<li class="toctree-l1"><a class="reference internal" href="notebook.html">Managing the bamboo notebook</a></li>
-<li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
-<li class="toctree-l1"><a class="reference internal" href="format_ax.html">Formatting the axis</a></li>
-<li class="toctree-l1"><a class="reference internal" href="canvas.html">Using Canvas for PDFs</a></li>
-</ul>
-</div>
+<p>As you can see, the project tree contains four main directories each
+with a specific purpose. All RAW images, spreadsheets, database dumps are housed
+under <em>data</em>. All analyses and analysis parameters are in <em>analysis</em>.
+Do not confuse these two directories. One is dedicated for raw data only and
+the other any of its transformations or extracted data. That includes image
+transformations. Any powerpoint presentations or manuscripts are under
+<em>pub</em>. Lastly, the lab notebook-like object notebook.pdf will aggregate
+experimental metadata, raw data, and analysis to give a track record for the
+project. Due process will be given to explaining how to manage the notebook.</p>
+<p>Let’s first go over how to build a new project.</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">bamboo</span> <span class="kn">import</span> <span class="n">build_new_project</span>
+
+<span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+
+          <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/path/to/parent/directory&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;name&#39;</span> <span class="p">:</span> <span class="s1">&#39;sample_project&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;date&#39;</span> <span class="p">:</span> <span class="s1">&#39;200810&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;storage&#39;</span> <span class="p">:</span> <span class="s1">&#39;remote&#39;</span><span class="p">,</span>
+          <span class="s1">&#39;naming&#39;</span> <span class="p">:</span> <span class="s1">&#39;standard&#39;</span>
+
+         <span class="p">}</span>
+
+<span class="n">build_new_project</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+</pre></div>
 </div>
 </div>
 
@@ -212,8 +204,10 @@ cloud storage provider such as Box or Google Drive, if desired.</p>
   
     <div class="rst-footer-buttons" role="navigation" aria-label="footer navigation">
       
-        <a href="install.html" class="btn btn-neutral float-right" title="Installation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
+        <a href="notebook.html" class="btn btn-neutral float-right" title="Managing the bamboo notebook" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
+      
+        <a href="install.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   

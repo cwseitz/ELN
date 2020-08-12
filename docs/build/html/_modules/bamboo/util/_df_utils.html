@@ -86,6 +86,8 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="../../../install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../project.html">Starting a bamboo project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../notebook.html">Managing the bamboo notebook</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../modules.html">Modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../format_ax.html">Formatting the axis</a></li>
 <li class="toctree-l1"><a class="reference internal" href="../../../canvas.html">Using Canvas for PDFs</a></li>
@@ -162,7 +164,7 @@
 <span class="kn">from</span> <span class="nn">skimage.measure</span> <span class="kn">import</span> <span class="n">label</span>
 
 
-<span class="k">def</span> <span class="nf">add_obj_lbl</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">is_labeled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">col_name</span><span class="o">=</span><span class="s1">&#39;region_label&#39;</span><span class="p">):</span>
+<div class="viewcode-block" id="add_obj_lbl"><a class="viewcode-back" href="../../../modules.html#bamboo.util.add_obj_lbl">[docs]</a><span class="k">def</span> <span class="nf">add_obj_lbl</span><span class="p">(</span><span class="n">df</span><span class="p">,</span> <span class="n">mask</span><span class="p">,</span> <span class="n">is_labeled</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">col_name</span><span class="o">=</span><span class="s1">&#39;region_label&#39;</span><span class="p">):</span>
 
 	<span class="sd">&quot;&quot;&quot;</span>
 <span class="sd">	Add object_lbl column to DataFrame</span>
@@ -180,7 +182,7 @@
 	<span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">row</span> <span class="ow">in</span> <span class="n">df</span><span class="o">.</span><span class="n">iterrows</span><span class="p">():</span>
 		<span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="n">col_name</span><span class="p">]</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">mask</span><span class="p">[</span><span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;x&#39;</span><span class="p">])),</span> \
 									    <span class="nb">int</span><span class="p">(</span><span class="nb">round</span><span class="p">(</span><span class="n">df</span><span class="o">.</span><span class="n">at</span><span class="p">[</span><span class="n">i</span><span class="p">,</span> <span class="s1">&#39;y&#39;</span><span class="p">]))])</span>
-	<span class="k">return</span> <span class="n">df</span>
+	<span class="k">return</span> <span class="n">df</span></div>
 
 <div class="viewcode-block" id="add_obj_type"><a class="viewcode-back" href="../../../modules.html#bamboo.util.add_obj_type">[docs]</a><span class="k">def</span> <span class="nf">add_obj_type</span><span class="p">(</span><span class="n">mask_arr</span><span class="p">,</span> <span class="n">blobs_df</span><span class="p">,</span> <span class="n">col_name</span><span class="o">=</span><span class="s1">&#39;region_type&#39;</span><span class="p">,</span>
 				 <span class="n">obj_names</span><span class="o">=</span><span class="kc">None</span><span class="p">,</span> <span class="n">pltshow</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">det_colors</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>

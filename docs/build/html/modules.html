@@ -37,7 +37,7 @@
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
     <link rel="next" title="Formatting the axis" href="format_ax.html" />
-    <link rel="prev" title="Installation" href="install.html" /> 
+    <link rel="prev" title="Managing the bamboo notebook" href="notebook.html" /> 
 </head>
 
 <body class="wy-body-for-nav">
@@ -88,10 +88,12 @@
             
               <ul class="current">
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="project.html">Starting a bamboo project</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebook.html">Managing the bamboo notebook</a></li>
 <li class="toctree-l1 current"><a class="current reference internal" href="#">Modules</a><ul>
 <li class="toctree-l2"><a class="reference internal" href="#module-bamboo.metrics">metrics</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#objects">objects</a></li>
-<li class="toctree-l2"><a class="reference internal" href="#plots">plots</a></li>
+<li class="toctree-l2"><a class="reference internal" href="#module-bamboo.plots">plots</a></li>
 <li class="toctree-l2"><a class="reference internal" href="#module-bamboo.util">util</a></li>
 </ul>
 </li>
@@ -487,8 +489,543 @@ canvas-like figure object for output as 8.5 x 11 pdf.</p>
 </dd></dl>
 
 </div>
-<div class="section" id="plots">
-<h2>plots<a class="headerlink" href="#plots" title="Permalink to this headline">¶</a></h2>
+<div class="section" id="module-bamboo.plots">
+<span id="plots"></span><h2>plots<a class="headerlink" href="#module-bamboo.plots" title="Permalink to this headline">¶</a></h2>
+<dl class="function">
+<dt id="bamboo.plots.add_mean_msd">
+<code class="sig-prename descclassname">bamboo.plots.</code><code class="sig-name descname">add_mean_msd</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">df</em>, <em class="sig-param">pixel_size</em>, <em class="sig-param">frame_rate</em>, <em class="sig-param">divide_num</em>, <em class="sig-param">cat_col=None</em>, <em class="sig-param">cat_order=None</em>, <em class="sig-param">RGBA_alpha=0.5</em>, <em class="sig-param">fitting_linewidth=3</em>, <em class="sig-param">elinewidth=None</em>, <em class="sig-param">markersize=None</em>, <em class="sig-param">capsize=2</em>, <em class="sig-param">set_format=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/plots/_add_mean_msd.html#add_mean_msd"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.plots.add_mean_msd" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add mean MSD curve in matplotlib axis.
+The MSD data are obtained from df.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">object</span></dt><dd><p>matplotlib axis to annotate ellipse.</p>
+</dd>
+<dt><strong>df</strong><span class="classifier">DataFrame</span></dt><dd><p>DataFrame containing ‘particle’, ‘frame’, ‘x’, and ‘y’ columns</p>
+</dd>
+<dt><strong>cat_col</strong><span class="classifier">None or str</span></dt><dd><p>Column to use for categorical sorting</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Annotate mean MSD in the ax.</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="bamboo.plots.add_D_hist">
+<code class="sig-prename descclassname">bamboo.plots.</code><code class="sig-name descname">add_D_hist</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">df</em>, <em class="sig-param">cat_col=None</em>, <em class="sig-param">cat_order=None</em>, <em class="sig-param">color_list=None</em>, <em class="sig-param">RGBA_alpha=0.5</em>, <em class="sig-param">hist_kws=None</em>, <em class="sig-param">kde=True</em>, <em class="sig-param">set_format=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/plots/_add_D_hist.html#add_D_hist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.plots.add_D_hist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add D histogram in matplotlib axis.</p>
+<ol class="arabic simple">
+<li><p>If df is empty, return.</p></li>
+<li><p>Drop duplicates D values based on ‘particle’ column.</p></li>
+<li><p>Add D histograms to the ax.</p></li>
+<li><p>Format the ax if needed.</p></li>
+</ol>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>ax</strong><span class="classifier">object</span></dt><dd><p>matplotlib axis.</p>
+</dd>
+<dt><strong>df</strong><span class="classifier">DataFrame</span></dt><dd><blockquote>
+<div><p>DataFrame contains with columns ‘D’, ‘particle’</p>
+</div></blockquote>
+<p>may contain cat_col.</p>
+</dd>
+<dt><strong>data_col</strong><span class="classifier">str</span></dt><dd><p>Column used to plot histogram.</p>
+</dd>
+<dt><strong>cat_col</strong><span class="classifier">str, optional</span></dt><dd><p>Column to use for categorical sorting.</p>
+</dd>
+<dt><strong>cat_order</strong><span class="classifier">list of str, optional</span></dt><dd><p>Prefered order to plot the histograms.</p>
+</dd>
+<dt><strong>color_list</strong><span class="classifier">list of tuple/list, optional</span></dt><dd><p>Prefered colors to plot histograms.</p>
+</dd>
+<dt><strong>RGBA_alpha</strong><span class="classifier">float, optional</span></dt><dd><p>If alpha value is not specified, this value will be used.</p>
+</dd>
+<dt><strong>set_format</strong><span class="classifier">bool, optional</span></dt><dd><p>If true, set the ax format to default format.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Add D histograms in the ax.</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="bamboo.plots.add_alpha_hist">
+<code class="sig-prename descclassname">bamboo.plots.</code><code class="sig-name descname">add_alpha_hist</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">df</em>, <em class="sig-param">cat_col=None</em>, <em class="sig-param">cat_order=None</em>, <em class="sig-param">color_list=None</em>, <em class="sig-param">RGBA_alpha=0.5</em>, <em class="sig-param">hist_kws=None</em>, <em class="sig-param">kde=True</em>, <em class="sig-param">set_format=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/plots/_add_alpha_hist.html#add_alpha_hist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.plots.add_alpha_hist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add alpha histogram in matplotlib axis.</p>
+<ol class="arabic simple">
+<li><p>If df is empty, return.</p></li>
+<li><p>Drop duplicates alpha values based on ‘particle’ column.</p></li>
+<li><p>Add alpha histograms to the ax.</p></li>
+<li><p>Format the ax if needed.</p></li>
+</ol>
+<dl class="field-list">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl>
+<dt><strong>ax</strong><span class="classifier">object</span></dt><dd><p>matplotlib axis.</p>
+</dd>
+<dt><strong>df</strong><span class="classifier">DataFrame</span></dt><dd><blockquote>
+<div><p>DataFrame contains with columns ‘alpha’, ‘particle’</p>
+</div></blockquote>
+<p>may contain cat_col.</p>
+</dd>
+<dt><strong>data_col</strong><span class="classifier">str</span></dt><dd><p>Column used to plot histogram.</p>
+</dd>
+<dt><strong>cat_col</strong><span class="classifier">str, optional</span></dt><dd><p>Column to use for categorical sorting.</p>
+</dd>
+<dt><strong>cat_order</strong><span class="classifier">list of str, optional</span></dt><dd><p>Prefered order to plot the histograms.</p>
+</dd>
+<dt><strong>color_list</strong><span class="classifier">list of tuple/list, optional</span></dt><dd><p>Prefered colors to plot histograms.</p>
+</dd>
+<dt><strong>RGBA_alpha</strong><span class="classifier">float, optional</span></dt><dd><p>If alpha value is not specified, this value will be used.</p>
+</dd>
+<dt><strong>set_format</strong><span class="classifier">bool, optional</span></dt><dd><p>If true, set the ax format to default format.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Add alpha histograms in the ax.</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="bamboo.plots.add_gmm">
+<code class="sig-prename descclassname">bamboo.plots.</code><code class="sig-name descname">add_gmm</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">blobs_df</em>, <em class="sig-param">cat_col</em>, <em class="sig-param">n_comp</em>, <em class="sig-param">hist_col</em>, <em class="sig-param">cv_type='full'</em>, <em class="sig-param">RGBA_alpha=0.5</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/plots/_add_gmm.html#add_gmm"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.plots.add_gmm" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add histogram in matplotlib axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">object</span></dt><dd><p>matplotlib axis to annotate ellipse.</p>
+</dd>
+<dt><strong>blobs_df</strong><span class="classifier">DataFrame</span></dt><dd><p>DataFrame containing ‘particle’, ‘D’ columns</p>
+</dd>
+<dt><strong>cat_col</strong><span class="classifier">str</span></dt><dd><p>Column to use for categorical sorting</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Add D histograms in the ax.</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="bamboo.plots.add_violin_1">
+<code class="sig-prename descclassname">bamboo.plots.</code><code class="sig-name descname">add_violin_1</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">df</em>, <em class="sig-param">data_col</em>, <em class="sig-param">cat_col</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/plots/_add_violin.html#add_violin_1"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.plots.add_violin_1" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add violin plot in matplotlib axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">object</span></dt><dd><p>matplotlib axis to annotate ellipse.</p>
+</dd>
+<dt><strong>df</strong><span class="classifier">DataFrame</span></dt><dd><p>DataFrame containing data_col, cat_col</p>
+</dd>
+<dt><strong>data_col</strong><span class="classifier">str</span></dt><dd><p>Column contain the data</p>
+</dd>
+<dt><strong>cat_col</strong><span class="classifier">str</span></dt><dd><p>Column to use for categorical sorting</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Add violin plots in the ax.</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="bamboo.plots.add_violin_2">
+<code class="sig-prename descclassname">bamboo.plots.</code><code class="sig-name descname">add_violin_2</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">df</em>, <em class="sig-param">data_col</em>, <em class="sig-param">cat_col</em>, <em class="sig-param">hue_order=None</em>, <em class="sig-param">inner='quartile'</em>, <em class="sig-param">RGBA_alpha=0.6</em>, <em class="sig-param">linewidth=0.5</em>, <em class="sig-param">set_format=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/plots/_add_violin.html#add_violin_2"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.plots.add_violin_2" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add violin plot in matplotlib axis.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">object</span></dt><dd><p>matplotlib axis to annotate ellipse.</p>
+</dd>
+<dt><strong>df</strong><span class="classifier">DataFrame</span></dt><dd><p>DataFrame containing data_col, cat_col</p>
+</dd>
+<dt><strong>data_col</strong><span class="classifier">str</span></dt><dd><p>Column contain the data</p>
+</dd>
+<dt><strong>cat_col</strong><span class="classifier">str</span></dt><dd><p>Column to use for categorical sorting</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Add violin plots in the ax.</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="bamboo.plots.add_scatter">
+<code class="sig-prename descclassname">bamboo.plots.</code><code class="sig-name descname">add_scatter</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">df</em>, <em class="sig-param">col1</em>, <em class="sig-param">col2</em>, <em class="sig-param">col1_alias=None</em>, <em class="sig-param">col2_alias=None</em>, <em class="sig-param">norm=False</em>, <em class="sig-param">label=None</em>, <em class="sig-param">color='blue'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/plots/_add_scatter.html#add_scatter"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.plots.add_scatter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate scatter plot of two variables</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">object</span></dt><dd><p>matplotlib axis</p>
+</dd>
+<dt><strong>df</strong><span class="classifier">DataFrame</span></dt><dd><p>DataFrame containing hist_col, cat_col</p>
+</dd>
+<dt><strong>col1,col2</strong><span class="classifier">str</span></dt><dd><p>Column names that contain the data</p>
+</dd>
+<dt><strong>col1_alias,col2_alias</strong><span class="classifier">str</span></dt><dd><p>Alias for each column axis label</p>
+</dd>
+<dt><strong>norm</strong><span class="classifier">bool</span></dt><dd><p>Transform data to arbitrary units</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="bamboo.plots.add_corr_coeff">
+<code class="sig-prename descclassname">bamboo.plots.</code><code class="sig-name descname">add_corr_coeff</code><span class="sig-paren">(</span><em class="sig-param">ax, df, col1, col2, corr_type='linear', norm=False, color='black', text_pos=[0.75, 0.8]</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/plots/_add_corr_coeff.html#add_corr_coeff"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.plots.add_corr_coeff" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add pearson correlation coefficient to axis</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">object</span></dt><dd><p>matplotlib axis</p>
+</dd>
+<dt><strong>df</strong><span class="classifier">DataFrame</span></dt><dd><p>DataFrame containing hist_col, cat_col</p>
+</dd>
+<dt><strong>col1,col2</strong><span class="classifier">str</span></dt><dd><p>Column names that contain the data</p>
+</dd>
+<dt><strong>norm</strong><span class="classifier">bool</span></dt><dd><p>Transform data to arbitrary units</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="bamboo.plots.add_fitting">
+<code class="sig-prename descclassname">bamboo.plots.</code><code class="sig-name descname">add_fitting</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">df</em>, <em class="sig-param">col1</em>, <em class="sig-param">col2</em>, <em class="sig-param">norm=False</em>, <em class="sig-param">color='lime'</em>, <em class="sig-param">label=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/plots/_add_fitting.html#add_fitting"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.plots.add_fitting" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add linear fitting to axis</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">object</span></dt><dd><p>matplotlib axis</p>
+</dd>
+<dt><strong>df</strong><span class="classifier">DataFrame</span></dt><dd><p>DataFrame containing hist_col, cat_col</p>
+</dd>
+<dt><strong>col1,col2</strong><span class="classifier">str</span></dt><dd><p>Column names that contain the data</p>
+</dd>
+<dt><strong>norm</strong><span class="classifier">bool</span></dt><dd><p>Transform data to arbitrary units</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="bamboo.plots.add_grp_bar">
+<code class="sig-prename descclassname">bamboo.plots.</code><code class="sig-name descname">add_grp_bar</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">df</em>, <em class="sig-param">cat_cols</em>, <em class="sig-param">colors</em>, <em class="sig-param">grp_space=1.0</em>, <em class="sig-param">bar_width=0.35</em>, <em class="sig-param">alpha=1.0</em>, <em class="sig-param">err_col='sem'</em>, <em class="sig-param">neg_err=False</em>, <em class="sig-param">stack_col=None</em>, <em class="sig-param">btm_clr=None</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/plots/_add_grp_bar.html#add_grp_bar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.plots.add_grp_bar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add a grouped bar chart to the axis. See
+<a class="reference external" href="https://matplotlib.org/3.1.0/gallery/lines_bars_and_markers/barchart.html">https://matplotlib.org/3.1.0/gallery/lines_bars_and_markers/barchart.html</a></p>
+<p>A single layer of grouped bar charts is added to the axis for 2D data.
+For 3D data, where the third dimension is binary, two layers of grouped
+bar charts are added to the axis, one stacked on top of the other</p>
+<ol class="arabic simple">
+<li><p>If stack column is specified, divide the data on stack col</p></li>
+<li><p>Call add_layer() for each sub-dataframe</p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">object</span></dt><dd><p>matplotlib axis.</p>
+</dd>
+<dt><strong>df</strong><span class="classifier">DataFrame</span></dt><dd><p>DataFrame that contains cat_cols</p>
+</dd>
+<dt><strong>cat_cols</strong><span class="classifier">list</span></dt><dd><p>a list of columns, each of which is a category to divide the data on</p>
+</dd>
+<dt><strong>colors</strong><span class="classifier">list</span></dt><dd><p>a list of colors</p>
+</dd>
+<dt><strong>neg_err</strong><span class="classifier">bool, optional</span></dt><dd><p>whether or not to show the negative error in error bars, False by defualt</p>
+</dd>
+<dt><strong>grp_space</strong><span class="classifier">float, optional</span></dt><dd><p>spacing between grouped bars in axis units</p>
+</dd>
+<dt><strong>bar_width</strong><span class="classifier">float, optional</span></dt><dd><p>width of each bar</p>
+</dd>
+<dt><strong>alpha</strong><span class="classifier">list, optional</span></dt><dd><p>transparency of the bars</p>
+</dd>
+<dt><strong>err_col</strong><span class="classifier">str, optional</span></dt><dd><p>name of the DataFrame column containing error values e.g. ‘sem’ or ‘std’</p>
+</dd>
+<dt><strong>stack_col</strong><span class="classifier">str, optional</span></dt><dd><p>a column to divide the DataFrame on, each sub-dataframe defining a layer
+of a layered bar chart</p>
+</dd>
+<dt><strong>btm_clr</strong><span class="classifier">list, optional</span></dt><dd><p>an additional list of colors to use strictly for the bottom layers
+of bars in a stacked bar scenario. applies only for 3-dimensional data.</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="bamboo.plots.add_stat_anno">
+<code class="sig-prename descclassname">bamboo.plots.</code><code class="sig-name descname">add_stat_anno</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">x_arr</em>, <em class="sig-param">y_arr</em>, <em class="sig-param">p_val_arr</em>, <em class="sig-param">bwidth=0.1</em>, <em class="sig-param">bheight=0.1</em>, <em class="sig-param">delta=0.05</em>, <em class="sig-param">fontsize=10</em>, <em class="sig-param">star_spacing=0.05</em>, <em class="sig-param">show_brackets=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/plots/_add_stat_anno.html#add_stat_anno"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.plots.add_stat_anno" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add statistical annotations to the axis i.e. p-value stars and brackets</p>
+<ol class="arabic simple">
+<li><p>Flatten all input arrays</p></li>
+<li><p>Convert p-values to strings of stars and add to axis</p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">object</span></dt><dd><p>matplotlib axis.</p>
+</dd>
+<dt><strong>x_arr</strong><span class="classifier">list</span></dt><dd><p>list of x-coordinates for the stars and/or brackets in axis units</p>
+</dd>
+<dt><strong>y_arr</strong><span class="classifier">list</span></dt><dd><p>a list of y-coordiantes for the stars and/or brackets in axis units</p>
+</dd>
+<dt><strong>p_val_arr</strong><span class="classifier">list</span></dt><dd><p>a list of the pvalues e.g. .001, .00001, etc.</p>
+</dd>
+<dt><strong>bwidth</strong><span class="classifier">float, optional</span></dt><dd><p>width of the bracket in axis units</p>
+</dd>
+<dt><strong>bheight</strong><span class="classifier">float, optional</span></dt><dd><p>height of a bracket in axis units</p>
+</dd>
+<dt><strong>delta</strong><span class="classifier">float, optional</span></dt><dd><p>padding between y-coordinate and where the bracket is placed</p>
+</dd>
+<dt><strong>fontsize</strong><span class="classifier">float, optional</span></dt><dd><p>fontsize for the stars</p>
+</dd>
+<dt><strong>star_spacing</strong><span class="classifier">float, optional</span></dt><dd><p>spacing between star and bracket</p>
+</dd>
+<dt><strong>show_brackets</strong><span class="classifier">bool, optional</span></dt><dd><p>whether or not to show the bracket</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="bamboo.plots.add_strip_plot">
+<code class="sig-prename descclassname">bamboo.plots.</code><code class="sig-name descname">add_strip_plot</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">df</em>, <em class="sig-param">hist_col</em>, <em class="sig-param">cat_col</em>, <em class="sig-param">xlabels=None</em>, <em class="sig-param">ylabel=None</em>, <em class="sig-param">palette=None</em>, <em class="sig-param">counts=False</em>, <em class="sig-param">x_labelsize=10</em>, <em class="sig-param">y_labelsize=10</em>, <em class="sig-param">drop_duplicates=False</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/plots/_add_strip_plot.html#add_strip_plot"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.plots.add_strip_plot" title="Permalink to this definition">¶</a></dt>
+<dd><p>Generate strip plot</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">object</span></dt><dd><p>matplotlib axis</p>
+</dd>
+<dt><strong>df</strong><span class="classifier">DataFrame</span></dt><dd><p>DataFrame containing hist_col, cat_col</p>
+</dd>
+<dt><strong>hist_col</strong><span class="classifier">str</span></dt><dd><p>Column of df that contains the data</p>
+</dd>
+<dt><strong>cat_col</strong><span class="classifier">str</span></dt><dd><p>Column to use for categorical sorting</p>
+</dd>
+<dt><strong>palette</strong><span class="classifier">array</span></dt><dd><p>seaborn color palette</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="bamboo.plots.add_scalebar">
+<code class="sig-prename descclassname">bamboo.plots.</code><code class="sig-name descname">add_scalebar</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">pixel_size</em>, <em class="sig-param">units='um'</em>, <em class="sig-param">sb_color=(0.5</em>, <em class="sig-param">0.5</em>, <em class="sig-param">0.5)</em>, <em class="sig-param">sb_pos='upper right'</em>, <em class="sig-param">length_fraction=None</em>, <em class="sig-param">height_fraction=None</em>, <em class="sig-param">box_color=None</em>, <em class="sig-param">box_alpha=0</em>, <em class="sig-param">fontname='Arial'</em>, <em class="sig-param">fontsize='large'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/plots/_add_scalebar.html#add_scalebar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.plots.add_scalebar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add colorbar outside of the ax.
+Colorbar data are contained in the df.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">object</span></dt><dd><p>matplotlib axis to add colorbar.</p>
+</dd>
+<dt><strong>pixel_size</strong><span class="classifier">float</span></dt><dd><p>Pixel size.</p>
+</dd>
+<dt><strong>units</strong><span class="classifier">string</span></dt><dd><p>Pixel unit. eg. ‘um’</p>
+</dd>
+<dt><strong>sb_color</strong><span class="classifier">tuple</span></dt><dd><p>RGB or RGBA tuple to define the scalebar color</p>
+</dd>
+<dt><strong>sb_pos</strong><span class="classifier">string</span></dt><dd><p>position string. (‘upper right’…)</p>
+</dd>
+<dt><strong>length_fraction</strong><span class="classifier">float</span></dt><dd><p>scalebar length relative to ax</p>
+</dd>
+<dt><strong>height_fraction</strong><span class="classifier">float</span></dt><dd><p>scalebar height relative to ax</p>
+</dd>
+<dt><strong>box_color</strong><span class="classifier">tuple</span></dt><dd><p>RGB or RGBA tuple to define the scalebar background box color</p>
+</dd>
+<dt><strong>box_alpha</strong><span class="classifier">float</span></dt><dd><p>Define the transparency of the background box color</p>
+</dd>
+<dt><strong>fontname: string</strong></dt><dd><p>Font used in the figure. Default is ‘Arial’</p>
+</dd>
+<dt><strong>fontsize</strong><span class="classifier">string or integer</span></dt><dd><p>Define the label text size. eg. ‘large’, ‘x-large’, 10, 40…</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Insert a scalebar in ax.</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="bamboo.plots.add_53bp1_count">
+<code class="sig-prename descclassname">bamboo.plots.</code><code class="sig-name descname">add_53bp1_count</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">df</em>, <em class="sig-param">exp_col='exp_label'</em>, <em class="sig-param">cell_col='cell_num'</em>, <em class="sig-param">cycle_col='cycle_num'</em>, <em class="sig-param">dt_per_cycle=2</em>, <em class="sig-param">start=None</em>, <em class="sig-param">RGBA_alpha=0.5</em>, <em class="sig-param">fitting_linewidth=3</em>, <em class="sig-param">elinewidth=None</em>, <em class="sig-param">markersize=None</em>, <em class="sig-param">capsize=2</em>, <em class="sig-param">set_format=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/plots/_add_53bp1_count.html#add_53bp1_count"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.plots.add_53bp1_count" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add mean spot count curve in matplotlib axis.
+For use with cycled imaging only
+The spot counts are obtained from df.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">object</span></dt><dd><p>matplotlib axis to annotate ellipse.</p>
+</dd>
+<dt><strong>df</strong><span class="classifier">DataFrame</span></dt><dd><p>DataFrame containing ‘cell_num’, ‘particle’, ‘exp_label’, ‘cycle_num’
+columns</p>
+</dd>
+<dt><strong>cat_col</strong><span class="classifier">None or str</span></dt><dd><p>Column to use for categorical sorting</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="bamboo.plots.add_53bp1_diffusion">
+<code class="sig-prename descclassname">bamboo.plots.</code><code class="sig-name descname">add_53bp1_diffusion</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">df</em>, <em class="sig-param">exp_col='exp_label'</em>, <em class="sig-param">cell_col='cell_num'</em>, <em class="sig-param">cycle_col='cycle_num'</em>, <em class="sig-param">dt_per_cycle=2</em>, <em class="sig-param">start=None</em>, <em class="sig-param">RGBA_alpha=0.5</em>, <em class="sig-param">fitting_linewidth=3</em>, <em class="sig-param">elinewidth=None</em>, <em class="sig-param">markersize=None</em>, <em class="sig-param">capsize=2</em>, <em class="sig-param">set_format=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/plots/_add_53bp1_diffusion.html#add_53bp1_diffusion"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.plots.add_53bp1_diffusion" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add mean D curve in matplotlib axis.
+For use with cycled imaging only</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">object</span></dt><dd><p>matplotlib axis to annotate ellipse.</p>
+</dd>
+<dt><strong>df</strong><span class="classifier">DataFrame</span></dt><dd><p>DataFrame containing ‘cell_num’, ‘particle’, ‘exp_label’, ‘cycle_num’
+columns</p>
+</dd>
+<dt><strong>cat_col</strong><span class="classifier">None or str</span></dt><dd><p>Column to use for categorical sorting</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="bamboo.plots.add_outside_colorbar">
+<code class="sig-prename descclassname">bamboo.plots.</code><code class="sig-name descname">add_outside_colorbar</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">df</em>, <em class="sig-param">data_col='D'</em>, <em class="sig-param">cb_pos='right'</em>, <em class="sig-param">cb_size='5%'</em>, <em class="sig-param">cb_pad=0.1</em>, <em class="sig-param">cb_colormap='coolwarm'</em>, <em class="sig-param">cb_orientation='vertical'</em>, <em class="sig-param">cb_extend='both'</em>, <em class="sig-param">cb_min=None</em>, <em class="sig-param">cb_max=None</em>, <em class="sig-param">cb_major_ticker=None</em>, <em class="sig-param">cb_minor_ticker=None</em>, <em class="sig-param">cb_tick_loc='right'</em>, <em class="sig-param">show_colorbar=True</em>, <em class="sig-param">label_str='D (nm$^2$/s)'</em>, <em class="sig-param">label_font_size=20</em>, <em class="sig-param">label_color=(0</em>, <em class="sig-param">0</em>, <em class="sig-param">0)</em>, <em class="sig-param">label_font='Arial'</em>, <em class="sig-param">label_weight='bold'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/plots/_add_colorbar.html#add_outside_colorbar"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.plots.add_outside_colorbar" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add colorbar outside of the ax.
+Colorbar data are contained in the df.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">object</span></dt><dd><p>matplotlib axis to add colorbar.</p>
+</dd>
+<dt><strong>df</strong><span class="classifier">DataFrame</span></dt><dd><p>DataFrame containing ‘D’ columns</p>
+</dd>
+<dt><strong>data_col</strong><span class="classifier">string</span></dt><dd><p>Data colunm name in the df</p>
+</dd>
+<dt><strong>label_str</strong><span class="classifier">string</span></dt><dd><p>Use this as the colorbar label</p>
+</dd>
+<dt><strong>label_font_size</strong><span class="classifier">string or integer</span></dt><dd><p>Define the label text size. eg. ‘large’, ‘x-large’, 10, 40…</p>
+</dd>
+<dt><strong>label_color</strong><span class="classifier">tuple</span></dt><dd><p>RGBA or RGB tuple to define the label and tick color</p>
+</dd>
+<dt><strong>label_font: string</strong></dt><dd><p>Font used in the figure. Default is ‘Arial’</p>
+</dd>
+<dt><strong>label_weight</strong><span class="classifier">string</span></dt><dd><p>font weight string as mpl.ax.text. (‘light’, ‘bold’…)</p>
+</dd>
+<dt><strong>cb_pos</strong><span class="classifier">string</span></dt><dd><p>append_axes position string. (‘right’, ‘top’…)</p>
+</dd>
+<dt><strong>cb_size</strong><span class="classifier">string</span></dt><dd><p>colorbar size string. (‘5%’)</p>
+</dd>
+<dt><strong>cb_pad</strong><span class="classifier">float</span></dt><dd><p>gap between colorbar and ax in inches.</p>
+</dd>
+<dt><strong>cb_colormap</strong><span class="classifier">string</span></dt><dd></dd>
+<dt><strong>cb_orientation</strong><span class="classifier">string</span></dt><dd><p>eg. ‘vertical’, ‘horizontal’</p>
+</dd>
+<dt><strong>cb_extend</strong><span class="classifier">string</span></dt><dd><p>eg. ‘neither’, ‘both’, None…</p>
+</dd>
+<dt><strong>cb_min, cb_max: float</strong></dt><dd><p>[cb_min, cb_max] is the color bar range.</p>
+</dd>
+<dt><strong>cb_major_ticker, cb_minor_ticker: float</strong></dt><dd><p>Major and minor setting for the color bar</p>
+</dd>
+<dt><strong>show_colorbar</strong><span class="classifier">bool</span></dt><dd><p>If False, only return colormap and df, no colorbar added.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Annotate colorbar outside of the ax.</dt><dd></dd>
+<dt>df, colormap returned.</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt id="bamboo.plots.add_hist">
+<code class="sig-prename descclassname">bamboo.plots.</code><code class="sig-name descname">add_hist</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">df</em>, <em class="sig-param">data_col</em>, <em class="sig-param">cat_col=None</em>, <em class="sig-param">cat_order=None</em>, <em class="sig-param">color_list=None</em>, <em class="sig-param">RGBA_alpha=1</em>, <em class="sig-param">bins=None</em>, <em class="sig-param">hist_kws=None</em>, <em class="sig-param">show_legend=True</em>, <em class="sig-param">kde=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/plots/_add_hist.html#add_hist"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.plots.add_hist" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add histogram in matplotlib axis.</p>
+<ol class="arabic simple">
+<li><p>If df is empty, return.</p></li>
+<li><p>Prepare the cats based on (cat_col, cat_order).</p></li>
+<li><p>Prepare the colors based on (cat_col, color_list).</p></li>
+<li><p>Add histgrams accordingly.</p></li>
+</ol>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">object</span></dt><dd><p>matplotlib axis.</p>
+</dd>
+<dt><strong>df</strong><span class="classifier">DataFrame</span></dt><dd><p>DataFrame containing necessary data.</p>
+</dd>
+<dt><strong>data_col</strong><span class="classifier">str</span></dt><dd><p>Column used to plot histogram.</p>
+</dd>
+<dt><strong>cat_col</strong><span class="classifier">str, optional</span></dt><dd><p>Column to use for categorical sorting.</p>
+</dd>
+<dt><strong>cat_order</strong><span class="classifier">list of str, optional</span></dt><dd><p>Prefered order to plot the histograms.</p>
+</dd>
+<dt><strong>color_list</strong><span class="classifier">list of tuple/list, optional</span></dt><dd><p>Prefered colors to plot histograms.</p>
+</dd>
+<dt><strong>RGBA_alpha</strong><span class="classifier">float, optional</span></dt><dd><p>If alpha value is not specified, this value will be used.</p>
+</dd>
+</dl>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><dl class="simple">
+<dt>Add histograms in the ax.</dt><dd></dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="function">
+<dt>
+<code class="sig-prename descclassname">bamboo.plots.</code><code class="sig-name descname">add_53bp1_diffusion</code><span class="sig-paren">(</span><em class="sig-param">ax</em>, <em class="sig-param">df</em>, <em class="sig-param">exp_col='exp_label'</em>, <em class="sig-param">cell_col='cell_num'</em>, <em class="sig-param">cycle_col='cycle_num'</em>, <em class="sig-param">dt_per_cycle=2</em>, <em class="sig-param">start=None</em>, <em class="sig-param">RGBA_alpha=0.5</em>, <em class="sig-param">fitting_linewidth=3</em>, <em class="sig-param">elinewidth=None</em>, <em class="sig-param">markersize=None</em>, <em class="sig-param">capsize=2</em>, <em class="sig-param">set_format=True</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/plots/_add_53bp1_diffusion.html#add_53bp1_diffusion"><span class="viewcode-link">[source]</span></a></dt>
+<dd><p>Add mean D curve in matplotlib axis.
+For use with cycled imaging only</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>ax</strong><span class="classifier">object</span></dt><dd><p>matplotlib axis to annotate ellipse.</p>
+</dd>
+<dt><strong>df</strong><span class="classifier">DataFrame</span></dt><dd><p>DataFrame containing ‘cell_num’, ‘particle’, ‘exp_label’, ‘cycle_num’
+columns</p>
+</dd>
+<dt><strong>cat_col</strong><span class="classifier">None or str</span></dt><dd><p>Column to use for categorical sorting</p>
+</dd>
+</dl>
+</dd>
+</dl>
+</dd></dl>
+
 </div>
 <div class="section" id="module-bamboo.util">
 <span id="util"></span><h2>util<a class="headerlink" href="#module-bamboo.util" title="Permalink to this headline">¶</a></h2>
@@ -541,6 +1078,20 @@ canvas-like figure object for output as 8.5 x 11 pdf.</p>
 <span class="gp">&gt;&gt;&gt; </span><span class="n">plt</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="function">
+<dt id="bamboo.util.add_obj_lbl">
+<code class="sig-prename descclassname">bamboo.util.</code><code class="sig-name descname">add_obj_lbl</code><span class="sig-paren">(</span><em class="sig-param">df</em>, <em class="sig-param">mask</em>, <em class="sig-param">is_labeled=True</em>, <em class="sig-param">col_name='region_label'</em><span class="sig-paren">)</span><a class="reference internal" href="_modules/bamboo/util/_df_utils.html#add_obj_lbl"><span class="viewcode-link">[source]</span></a><a class="headerlink" href="#bamboo.util.add_obj_lbl" title="Permalink to this definition">¶</a></dt>
+<dd><p>Add object_lbl column to DataFrame</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><dl class="simple">
+<dt><strong>df</strong><span class="classifier">DataFrame</span></dt><dd><p>DataFrame with x,y columns</p>
+</dd>
+</dl>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="function">
@@ -752,7 +1303,7 @@ lost by grouping</p>
         <a href="format_ax.html" class="btn btn-neutral float-right" title="Formatting the axis" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right"></span></a>
       
       
-        <a href="install.html" class="btn btn-neutral float-left" title="Installation" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
+        <a href="notebook.html" class="btn btn-neutral float-left" title="Managing the bamboo notebook" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left"></span> Previous</a>
       
     </div>
   
