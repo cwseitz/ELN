@@ -2,9 +2,9 @@ import pymongo as pm
 import uuid
 from datetime import datetime
 
-def connect(db_name, host, port):
-	client = pm.MongoClient(host, port)
-	db = client[db_name]
+def connect(uri, database):
+	client = pm.MongoClient(uri)
+	db = client[database]
 	return db
 
 def get_exp_id():
@@ -36,17 +36,21 @@ def add_measurement(db, df,
 	collection_name : str, optional
 	 name of collection in db to insert meta_dict
 
-
 	"""
 
-	df.reset_index(inplace=True)
+	df.reset_index(inplace=True); metadata.reset_index(inplace=True)
 	data = df.to_dict('records')
 	collection = db[collection]
-	dict = metadata
+
+	dict = {}
 	if not exp_date:
 		now = datetime.now()
 		date = now.strftime("%Y%m%d")
 		date = date[2:]
+
+	if metadata is not None:
+		metadata = metadata.to_dict('records')
+		dict['metadata'] = metadata
 
 	dict['exp_id'] = exp_id
 	dict['date'] = exp_date

@@ -93,3 +93,7 @@ class Canvas:
 
 		self.fig.suptitle(text, x=0.1, y=0.975,
 						  horizontalalignment='left', fontsize=10)
+
+	def save(self, path):
+		self.hide_sub_ax_ticks()
+		plt.savefig(path + '/test.pdf')

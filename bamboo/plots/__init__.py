@@ -18,6 +18,7 @@ __all__ = [
             'add_outside_colorbar',
             'add_hist',
             'add_53bp1_diffusion',
+            'add_table'
             ]
 
 from ._add_mean_msd import *
@@ -38,3 +39,4 @@ from ._add_53bp1_count import *
 from ._add_53bp1_diffusion import *
 from ._add_colorbar import *
 from ._add_hist import *
+from ._add_table import *
