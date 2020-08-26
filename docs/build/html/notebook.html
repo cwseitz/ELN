@@ -160,84 +160,117 @@
             
   <div class="section" id="managing-the-bamboo-notebook">
 <h1>Managing the bamboo notebook<a class="headerlink" href="#managing-the-bamboo-notebook" title="Permalink to this headline">¶</a></h1>
-<p>The bamboo notebook is basically a much better looking and smarter version of
-a paper lab notebook. It is in chronological order and is more aware of the
-rest of the project than pen and paper so you don’t have to be.</p>
-<p>When you do an experiment, you generate some data, hopefully, and you want
-to log how you generated it and later how you analyzed it. For the former,
-we take a batch of files stored at dir, provide some experimental metadata
-and where to store it and call add_data()</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">bamboo.notebook</span> <span class="kn">import</span> <span class="n">add_data</span>
+<p>Below is an example showing how to query a mongoDB instance and build
+a notebook</p>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">os</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
+<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
 
-<span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
-
-          <span class="s1">&#39;project_path&#39;</span><span class="p">:</span> <span class="s1">&#39;/path/to/project&#39;</span><span class="p">,</span>
-          <span class="s1">&#39;dir&#39;</span><span class="p">:</span> <span class="s1">&#39;/path/to/files/&#39;</span>
-          <span class="s1">&#39;param_file&#39;</span><span class="p">:</span> <span class="s1">&#39;/path/to/param_file.txt&#39;</span>
-          <span class="s1">&#39;exp_name&#39;</span> <span class="p">:</span> <span class="s1">&#39;sample_exp&#39;</span><span class="p">,</span>
-          <span class="s1">&#39;date&#39;</span> <span class="p">:</span> <span class="s1">&#39;200810&#39;</span><span class="p">,</span>
-          <span class="s1">&#39;storage&#39;</span> <span class="p">:</span> <span class="s1">&#39;both&#39;</span><span class="p">,</span>
-          <span class="s1">&#39;rename&#39;</span><span class="p">:</span> <span class="kc">True</span><span class="p">,</span>
-
-         <span class="p">}</span>
-
-<span class="n">add_data</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>This operation will log an entry in the notebook and move data stored
-at /path/to/files into /path/to/project/data and (optionally) rename all files
-according to the convention specified in the project metadata.
-Moving on, for the analysis portion, we provide a path to a CSV file containing
-a key-value pair for each analysis parameter and the parent experiment name:</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">bamboo.notebook</span> <span class="kn">import</span> <span class="n">add_analysis</span>
-
-<span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
-
-          <span class="s1">&#39;project_path&#39;</span><span class="p">:</span> <span class="s1">&#39;/path/to/project&#39;</span><span class="p">,</span>
-          <span class="s1">&#39;param_file&#39;</span><span class="p">:</span> <span class="s1">&#39;/path/to/param_file.txt&#39;</span>
-          <span class="s1">&#39;exp_name&#39;</span> <span class="p">:</span> <span class="s1">&#39;sample_exp&#39;</span><span class="p">,</span>
-          <span class="s1">&#39;date&#39;</span> <span class="p">:</span> <span class="s1">&#39;200810&#39;</span>
-          <span class="s1">&#39;storage&#39;</span> <span class="p">:</span> <span class="s1">&#39;both&#39;</span>
-
-         <span class="p">}</span>
-
-<span class="n">add_analysis</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
-</pre></div>
-</div>
-<p>This operation will also add an entry in the notebook.
-By providing the experiment name for this analysis, we link these in
-bamboo’s backend representation of the project. Note that it is possible to
-pass an array of experiment names (provided they exist) in the case that
-we decided to merge some data from several experiments for a single analysis.</p>
-<p>Next, we will try out a more advanced usage of add_analysis() that utilizes
-the Canvas object to take the data we generated in our analysis, plot it, and
-add those plots to a custom or default template.</p>
-<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">bamboo.notebook</span> <span class="kn">import</span> <span class="n">add_analysis</span>
+<span class="kn">from</span> <span class="nn">bamboo.plots</span> <span class="kn">import</span> <span class="o">*</span>
 <span class="kn">from</span> <span class="nn">bamboo.objects</span> <span class="kn">import</span> <span class="n">Canvas</span>
+<span class="kn">from</span> <span class="nn">bamboo.util</span> <span class="kn">import</span> <span class="n">format_ax</span>
+<span class="kn">from</span> <span class="nn">bamboo.db</span> <span class="kn">import</span> <span class="n">connect</span>
+<span class="kn">from</span> <span class="nn">bamboo.notebook</span> <span class="kn">import</span> <span class="o">*</span>
 
-<span class="n">author</span> <span class="o">=</span> <span class="s1">&#39;Author&#39;</span><span class="p">;</span> <span class="n">exp_name</span> <span class="o">=</span> <span class="s1">&#39;Experiment&#39;</span>
-<span class="n">template</span> <span class="o">=</span> <span class="p">[[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
-            <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
-            <span class="p">[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
-            <span class="p">[</span><span class="mf">0.0</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
-            <span class="p">[</span><span class="mf">0.3</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">],</span>
-            <span class="p">[</span><span class="mf">0.6</span><span class="p">,</span> <span class="mf">0.25</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">,</span> <span class="mf">0.2</span><span class="p">]]</span>
+<span class="n">db</span> <span class="o">=</span> <span class="n">connect</span><span class="p">(</span><span class="s1">&#39;mongodb://127.0.0.1:27017&#39;</span><span class="p">,</span> <span class="n">database</span><span class="o">=</span><span class="s1">&#39;testdb&#39;</span><span class="p">)</span>
+<span class="n">cwd</span> <span class="o">=</span> <span class="n">os</span><span class="o">.</span><span class="n">getcwd</span><span class="p">()</span>
 
-<span class="n">canvas</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="n">template</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="n">author</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">exp_name</span><span class="p">)</span>
-<span class="n">canvas</span><span class="o">.</span><span class="n">set_plots</span><span class="p">([</span><span class="n">plot1</span><span class="p">,</span> <span class="n">plot2</span><span class="p">,</span> <span class="o">...</span><span class="p">])</span>
+<span class="k">def</span> <span class="nf">page1</span><span class="p">(</span><span class="nb">dir</span><span class="p">):</span>
 
-<span class="n">params</span> <span class="o">=</span> <span class="p">{</span>
+  <span class="n">author</span> <span class="o">=</span> <span class="s1">&#39;Clayton Seitz&#39;</span><span class="p">;</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Data Analysis&#39;</span>
+  <span class="n">template</span> <span class="o">=</span> <span class="n">get_template_2</span><span class="p">()</span>
+  <span class="n">canvas</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="n">template</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="n">author</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
+  <span class="n">query</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">experiments</span><span class="o">.</span><span class="n">find_one</span><span class="p">()</span>
+  <span class="n">blobs_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">query</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">])</span>
 
-          <span class="s1">&#39;project_path&#39;</span><span class="p">:</span> <span class="s1">&#39;/path/to/project&#39;</span><span class="p">,</span>
-          <span class="s1">&#39;param_file&#39;</span><span class="p">:</span> <span class="s1">&#39;/path/to/param_file.txt&#39;</span>
-          <span class="s1">&#39;exp_name&#39;</span> <span class="p">:</span> <span class="s1">&#39;sample_exp&#39;</span><span class="p">,</span>
-          <span class="s1">&#39;date&#39;</span> <span class="p">:</span> <span class="s1">&#39;200810&#39;</span>
-          <span class="s1">&#39;storage&#39;</span> <span class="p">:</span> <span class="s1">&#39;both&#39;</span>
-          <span class="s1">&#39;canvas&#39;</span> <span class="p">:</span> <span class="n">canvas</span><span class="p">,</span>
+  <span class="n">add_mean_msd</span><span class="p">(</span><span class="n">canvas</span><span class="o">.</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">blobs_df</span><span class="p">,</span>
+        <span class="n">pixel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">frame_rate</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">divide_num</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+        <span class="n">RGBA_alpha</span><span class="o">=</span><span class="mf">0.5</span>
+        <span class="p">)</span>
+  <span class="n">canvas</span><span class="o">.</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
 
-         <span class="p">}</span>
+  <span class="n">add_D_hist</span><span class="p">(</span><span class="n">canvas</span><span class="o">.</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">blobs_df</span><span class="p">,</span>
+        <span class="n">RGBA_alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
 
-<span class="n">add_analysis</span><span class="p">(</span><span class="n">params</span><span class="p">)</span>
+  <span class="n">canvas</span><span class="o">.</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+  <span class="n">add_alpha_hist</span><span class="p">(</span><span class="n">canvas</span><span class="o">.</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">blobs_df</span><span class="p">,</span>
+           <span class="n">RGBA_alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+  <span class="n">canvas</span><span class="o">.</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+  <span class="n">canvas</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">cwd</span> <span class="o">+</span> <span class="s1">&#39;/page1.pdf&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">page2</span><span class="p">(</span><span class="nb">dir</span><span class="p">):</span>
+
+  <span class="n">author</span> <span class="o">=</span> <span class="s1">&#39;Clayton Seitz&#39;</span><span class="p">;</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Data Analysis&#39;</span>
+  <span class="n">template</span> <span class="o">=</span> <span class="n">get_template_2</span><span class="p">()</span>
+  <span class="n">canvas</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="n">template</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="n">author</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
+  <span class="n">query</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">experiments</span><span class="o">.</span><span class="n">find_one</span><span class="p">()</span>
+  <span class="n">blobs_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">query</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">])</span>
+
+  <span class="n">add_mean_msd</span><span class="p">(</span><span class="n">canvas</span><span class="o">.</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">blobs_df</span><span class="p">,</span>
+        <span class="n">pixel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">frame_rate</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">divide_num</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+        <span class="n">RGBA_alpha</span><span class="o">=</span><span class="mf">0.5</span>
+        <span class="p">)</span>
+  <span class="n">canvas</span><span class="o">.</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+  <span class="n">add_D_hist</span><span class="p">(</span><span class="n">canvas</span><span class="o">.</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">blobs_df</span><span class="p">,</span>
+        <span class="n">RGBA_alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+  <span class="n">canvas</span><span class="o">.</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+  <span class="n">add_alpha_hist</span><span class="p">(</span><span class="n">canvas</span><span class="o">.</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">blobs_df</span><span class="p">,</span>
+           <span class="n">RGBA_alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+  <span class="n">canvas</span><span class="o">.</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+  <span class="c1">#Save as pdf</span>
+  <span class="n">canvas</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">cwd</span> <span class="o">+</span> <span class="s1">&#39;/page2.pdf&#39;</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">page3</span><span class="p">(</span><span class="nb">dir</span><span class="p">):</span>
+
+  <span class="n">author</span> <span class="o">=</span> <span class="s1">&#39;Clayton Seitz&#39;</span><span class="p">;</span> <span class="n">title</span> <span class="o">=</span> <span class="s1">&#39;Data Analysis&#39;</span>
+  <span class="n">template</span> <span class="o">=</span> <span class="n">get_template_2</span><span class="p">()</span>
+  <span class="n">canvas</span> <span class="o">=</span> <span class="n">Canvas</span><span class="p">(</span><span class="n">template</span><span class="o">=</span><span class="n">template</span><span class="p">,</span> <span class="n">author</span><span class="o">=</span><span class="n">author</span><span class="p">,</span> <span class="n">title</span><span class="o">=</span><span class="n">title</span><span class="p">)</span>
+  <span class="n">query</span> <span class="o">=</span> <span class="n">db</span><span class="o">.</span><span class="n">experiments</span><span class="o">.</span><span class="n">find_one</span><span class="p">()</span>
+  <span class="n">blobs_df</span> <span class="o">=</span> <span class="n">pd</span><span class="o">.</span><span class="n">DataFrame</span><span class="p">(</span><span class="n">query</span><span class="p">[</span><span class="s1">&#39;data&#39;</span><span class="p">])</span>
+
+  <span class="n">add_mean_msd</span><span class="p">(</span><span class="n">canvas</span><span class="o">.</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">blobs_df</span><span class="p">,</span>
+        <span class="n">pixel_size</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">frame_rate</span><span class="o">=</span><span class="mi">1</span><span class="p">,</span>
+        <span class="n">divide_num</span><span class="o">=</span><span class="mi">5</span><span class="p">,</span>
+        <span class="n">RGBA_alpha</span><span class="o">=</span><span class="mf">0.5</span>
+        <span class="p">)</span>
+  <span class="n">canvas</span><span class="o">.</span><span class="n">ax</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper left&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+  <span class="n">add_D_hist</span><span class="p">(</span><span class="n">canvas</span><span class="o">.</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="n">blobs_df</span><span class="p">,</span>
+        <span class="n">RGBA_alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+  <span class="n">canvas</span><span class="o">.</span><span class="n">ax</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+  <span class="n">add_alpha_hist</span><span class="p">(</span><span class="n">canvas</span><span class="o">.</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="n">blobs_df</span><span class="p">,</span>
+           <span class="n">RGBA_alpha</span><span class="o">=</span><span class="mf">0.5</span><span class="p">)</span>
+
+  <span class="n">canvas</span><span class="o">.</span><span class="n">ax</span><span class="p">[</span><span class="mi">2</span><span class="p">]</span><span class="o">.</span><span class="n">legend</span><span class="p">(</span><span class="n">loc</span><span class="o">=</span><span class="s1">&#39;upper right&#39;</span><span class="p">,</span> <span class="n">frameon</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">fontsize</span><span class="o">=</span><span class="mi">13</span><span class="p">)</span>
+
+  <span class="c1">#Save as pdf</span>
+  <span class="n">canvas</span><span class="o">.</span><span class="n">save</span><span class="p">(</span><span class="n">cwd</span> <span class="o">+</span> <span class="s1">&#39;/page3.pdf&#39;</span><span class="p">)</span>
+
+
+<span class="n">page1</span><span class="p">(</span><span class="n">cwd</span><span class="p">)</span>
+<span class="n">page2</span><span class="p">(</span><span class="n">cwd</span><span class="p">)</span>
+<span class="n">page3</span><span class="p">(</span><span class="n">cwd</span><span class="p">)</span>
+
+<span class="n">pdfs</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;page1.pdf&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;page2.pdf&#39;</span><span class="p">,</span>
+    <span class="s1">&#39;page3.pdf&#39;</span><span class="p">]</span>
+
+<span class="n">build_notebook</span><span class="p">(</span><span class="n">cwd</span><span class="p">,</span> <span class="n">pdfs</span><span class="p">)</span>
 </pre></div>
 </div>
 </div>

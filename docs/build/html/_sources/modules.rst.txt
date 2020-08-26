@@ -10,6 +10,23 @@ metrics
 .. automodule:: bamboo.metrics
   :members:
 
+db
+--------
+
+.. currentmodule:: bamboo.db
+
+.. automodule:: bamboo.db
+  :members:
+
+notebook
+--------
+
+.. currentmodule:: bamboo.notebook
+
+.. automodule:: bamboo.notebook
+  :members:
+
+
 objects
 -------
 

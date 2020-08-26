@@ -7,7 +7,7 @@
   
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   
-  <title>bamboo.plots._add_fitting &mdash; bamboo  documentation</title>
+  <title>bamboo.plots._add_table &mdash; bamboo  documentation</title>
   
 
   
@@ -138,7 +138,7 @@
         
           <li><a href="../../index.html">Module code</a> &raquo;</li>
         
-      <li>bamboo.plots._add_fitting</li>
+      <li>bamboo.plots._add_table</li>
     
     
       <li class="wy-breadcrumbs-aside">
@@ -153,51 +153,27 @@
           <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
            <div itemprop="articleBody">
             
-  <h1>Source code for bamboo.plots._add_fitting</h1><div class="highlight"><pre>
-<span></span><span class="kn">import</span> <span class="nn">numpy</span> <span class="k">as</span> <span class="nn">np</span>
-<span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
-<span class="kn">from</span> <span class="nn">matplotlib</span> <span class="kn">import</span> <span class="n">cm</span>
-<span class="kn">from</span> <span class="nn">scipy.stats</span> <span class="kn">import</span> <span class="n">pearsonr</span>
-<span class="kn">from</span> <span class="nn">..metrics</span> <span class="kn">import</span> <span class="n">fit_linear</span>
+  <h1>Source code for bamboo.plots._add_table</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">matplotlib.pyplot</span> <span class="k">as</span> <span class="nn">plt</span>
+<span class="kn">import</span> <span class="nn">pandas</span> <span class="k">as</span> <span class="nn">pd</span>
 
-<div class="viewcode-block" id="add_fitting"><a class="viewcode-back" href="../../../modules.html#bamboo.plots.add_fitting">[docs]</a><span class="k">def</span> <span class="nf">add_fitting</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span>
-				<span class="n">df</span><span class="p">,</span>
-				<span class="n">col1</span><span class="p">,</span>
-				<span class="n">col2</span><span class="p">,</span>
-				<span class="n">norm</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span>
-				<span class="n">color</span><span class="o">=</span><span class="s1">&#39;lime&#39;</span><span class="p">,</span>
-				<span class="n">label</span><span class="o">=</span><span class="kc">None</span><span class="p">):</span>
+<div class="viewcode-block" id="add_table"><a class="viewcode-back" href="../../../modules.html#bamboo.plots.add_table">[docs]</a><span class="k">def</span> <span class="nf">add_table</span><span class="p">(</span><span class="n">ax</span><span class="p">,</span> <span class="n">df</span><span class="p">):</span>
 
-	<span class="sd">&quot;&quot;&quot;Add linear fitting to axis</span>
-
-<span class="sd">	Parameters</span>
-<span class="sd">	----------</span>
+	<span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">	Add a DataFrame as a table to the axis</span>
 
 <span class="sd">	Parameters</span>
 <span class="sd">	----------</span>
 <span class="sd">	ax : object</span>
-<span class="sd">		matplotlib axis</span>
-
-<span class="sd">	df : DataFrame</span>
-<span class="sd">		DataFrame containing hist_col, cat_col</span>
-
-<span class="sd">	col1,col2 : str</span>
-<span class="sd">		Column names that contain the data</span>
-
-<span class="sd">	norm : bool</span>
-<span class="sd">		Transform data to arbitrary units</span>
-
+<span class="sd">		matplotlib axis.</span>
 <span class="sd">	&quot;&quot;&quot;</span>
 
-	<span class="n">x</span><span class="p">,</span><span class="n">y</span> <span class="o">=</span> <span class="n">df</span><span class="p">[</span><span class="n">col1</span><span class="p">],</span> <span class="n">df</span><span class="p">[</span><span class="n">col2</span><span class="p">]</span>
-
-	<span class="k">if</span> <span class="n">norm</span><span class="p">:</span>
-		<span class="n">x</span> <span class="o">=</span> <span class="n">x</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">x</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-		<span class="n">y</span> <span class="o">=</span> <span class="n">y</span><span class="o">/</span><span class="n">np</span><span class="o">.</span><span class="n">abs</span><span class="p">(</span><span class="n">y</span><span class="p">)</span><span class="o">.</span><span class="n">max</span><span class="p">()</span>
-
-	<span class="n">slope</span><span class="p">,</span> <span class="n">intercept</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">p</span> <span class="o">=</span> <span class="n">fit_linear</span><span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">)</span>
-
-	<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">x</span><span class="p">,</span> <span class="n">intercept</span> <span class="o">+</span> <span class="n">slope</span><span class="o">*</span><span class="n">x</span><span class="p">,</span> <span class="n">color</span><span class="p">,</span> <span class="n">label</span><span class="o">=</span><span class="n">label</span><span class="p">)</span></div>
+	<span class="n">cell_text</span> <span class="o">=</span> <span class="p">[];</span>
+	<span class="k">for</span> <span class="n">row</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">df</span><span class="p">)):</span>
+		<span class="n">x</span> <span class="o">=</span> <span class="n">df</span><span class="o">.</span><span class="n">iloc</span><span class="p">[</span><span class="n">row</span><span class="p">]</span>
+		<span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">x</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]</span> <span class="c1">#remove index value</span>
+		<span class="n">cell_text</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>
+	<span class="n">ax</span><span class="o">.</span><span class="n">table</span><span class="p">(</span><span class="n">cellText</span><span class="o">=</span><span class="n">cell_text</span><span class="p">,</span> <span class="n">loc</span><span class="o">=</span><span class="s1">&#39;bottom&#39;</span><span class="p">)</span></div>
 </pre></div>
 
            </div>

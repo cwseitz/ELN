@@ -9,6 +9,20 @@ from datetime import datetime
 #Database functions
 
 def connect(uri, database):
+
+	"""
+
+	Connect to a mongoDB instance
+
+	Parameters
+	----------
+	uri : str,
+	 uri to mongoDB instance
+	database : str,
+	 name of the database to connect to
+
+	"""
+
 	client = pm.MongoClient(uri)
 	db = client[database]
 	return db
@@ -17,7 +31,14 @@ def init_db(uri, project_name):
 
 	"""
 
-	Creates a new project database with the standard set of collections
+	Initialize a new project database
+
+	Parameters
+	----------
+	uri : str,
+	 uri to mongoDB instance
+	project_name : str,
+	 desired name of the project
 
 	"""
 
@@ -31,7 +52,16 @@ def init_db(uri, project_name):
 def backup_db(db, dir, dest=None, flags=[]):
 
 	"""
-	Backs up a database by dumping it to dir and copying to a remote
+
+	Dump a database to disk and copy to remote destination
+
+	Parameters
+	----------
+	db : object,
+	  pymongo mongoDB instance
+	dir : str,
+	 directory to output the database dump
+
 	"""
 
 	#dump to disk, compress
@@ -56,7 +86,17 @@ def backup_db(db, dir, dest=None, flags=[]):
 def restore_db(db_name, path_to_dumps='ucbox:/dump'):
 
 	"""
-	Restores a database from a specified restore point
+
+	Restores a database from a specified restore point. Database
+	dumps are assumed to be .gz zipped files
+
+	Parameters
+	----------
+	db_name : object,
+	  name to give the restored database
+	path_to_dumps : str,
+	 directory containing database dumps
+
 	"""
 
 	#get restore point
@@ -91,6 +131,11 @@ def list_restore_points(dest='ucbox:/dump'):
 
 	List the available database restore points
 
+	Parameters
+	----------
+	dest : str,
+	  remote destination
+
 	"""
 
 	rclone_lsd(dest=[dest])
@@ -101,8 +146,7 @@ def get_uuid():
 
 	"""
 
-	Generate a uuid for the experiment. All measurements will be labeled
-	with this uuid for aggregation
+	Generate a uuid
 
 	"""
 
@@ -157,6 +201,8 @@ def add_notes(path):
 
 	"""
 
+	Add a .txt file containing notes to the database
+
 	Parameters
 	----------
 	path : str,
@@ -177,6 +223,12 @@ def rclone_lsd(dest=['ucbox:/']):
 
 	List directories at the specified remote destination
 
+	Parameters
+	----------
+	dest : str,
+	  remote destination
+
+
 	"""
 
 	flags = ['lsd'] + dest
@@ -188,6 +240,11 @@ def rclone_copy(source, dest, flags=['--no-traverse']):
 	"""
 
 	Copy files from source to destination
+
+	Parameters
+	----------
+	dest : str,
+	  remote destination
 
 	"""
 

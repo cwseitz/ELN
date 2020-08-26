@@ -87,7 +87,6 @@
             
               <ul>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="project.html">Starting a bamboo project</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebook.html">Managing the bamboo notebook</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="format_ax.html">Formatting the axis</a></li>
@@ -159,42 +158,22 @@
             
   <div class="section" id="bamboo">
 <h1>bamboo<a class="headerlink" href="#bamboo" title="Permalink to this headline">¶</a></h1>
-<p>Bamboo standardizes the organization, acquisition, storage, and
-presentation of data generated in biophysical research.
-It is meant to sandwich a data analysis pipeline,
-logging and storing experimental metadata as well as results of data analysis.
-The philosophy of the library is to streamline file naming, logging, and
-storage/retrieval so focus can be given to more important things.</p>
-<img alt="_images/lifecycle.png" src="_images/lifecycle.png" />
-<div class="section" id="framework">
-<h2>Framework<a class="headerlink" href="#framework" title="Permalink to this headline">¶</a></h2>
-</div>
-<div class="section" id="the-experiment">
-<h2>The Experiment<a class="headerlink" href="#the-experiment" title="Permalink to this headline">¶</a></h2>
-<p>Lab notebook for logging protocols, experimental parameters, etc.
-Design a template that aggregates image data, figures, plots, experimental
-parameters, etc.</p>
-</div>
-<div class="section" id="data-analysis">
-<h2>Data Analysis<a class="headerlink" href="#data-analysis" title="Permalink to this headline">¶</a></h2>
-<p>This is the part where bamboo takes the backseat. Use whatever image analysis
-or raw data analysis techniques you need to, organize everything in an excel
-sheet or csv and move on to the next stage: presentation/storage.</p>
-</div>
-<div class="section" id="presentaton-storage">
-<h2>Presentaton/Storage<a class="headerlink" href="#presentaton-storage" title="Permalink to this headline">¶</a></h2>
-<p>This is the terminal end of a project or iteration. Use built-in figure
-templates and matplotlib wrappers to create publication-quality plots or output
-the raw data to a database. Importantly, the ‘database’ may not be an RDBMS
-or the-like. Bamboo wraps the rclone program to sync data, pdfs, etc. to a
-cloud storage provider such as Box or Google Drive, if desired.</p>
-</div>
+<p>Below is a diagram depicting a tech setup that I have found to be incredibly
+useful for rapid and organized biophysics research in python. Frequently I have found
+myself reconfiguring operating systems, rewriting code, and fussing with package
+management. With this setup, everything is a portable environment, there is
+redundancy, software development is a breeze, and you can take advantage of a
+host of fancy applications on non-linux operating systems.</p>
+<img alt="_images/200824_Tech-Stack.jpg" src="_images/200824_Tech-Stack.jpg" />
+<p>The bamboo package makes this setup possible with all the necessary APIs to
+tools like rclone and mongoDB. In addition to this, it facilitates data analysis
+with common biophysical metrics and an electronic lab notebook. Stay organized
+my friends!</p>
 <div class="section" id="contents">
 <h2>Contents<a class="headerlink" href="#contents" title="Permalink to this headline">¶</a></h2>
 <div class="toctree-wrapper compound">
 <ul>
 <li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="project.html">Starting a bamboo project</a></li>
 <li class="toctree-l1"><a class="reference internal" href="notebook.html">Managing the bamboo notebook</a></li>
 <li class="toctree-l1"><a class="reference internal" href="modules.html">Modules</a></li>
 <li class="toctree-l1"><a class="reference internal" href="format_ax.html">Formatting the axis</a></li>
