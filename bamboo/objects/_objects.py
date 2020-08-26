@@ -96,4 +96,4 @@ class Canvas:
 
 	def save(self, path):
 		self.hide_sub_ax_ticks()
-		plt.savefig(path + '/test.pdf')
+		plt.savefig(path)
