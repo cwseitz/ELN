@@ -1,6 +1,5 @@
-Bamboo standardizes the storage and presentation of data generated in biophysical research. 
-It does NOT facilitate the *analysis* of data in an effort to be application-independent
-
+Bamboo is an electronic lab notebook written in python that provides
+the necessary APIs for figure generation and data storage/organization.
  
  Presentaton Layer
  -----------------
