@@ -2,11 +2,10 @@ from setuptools import setup
 
 setup(
 
-    name='bamboo',
+    name='ELN',
     version='0.0.1',
-    description="""A pandas/matplotlib wrapper for image-based data analysis
-                   and generating publication-quality plots""",
+    description="""An electronic lab notebook ELN written in Python""",
 
     author='Clayton Seitz',
     author_email='cwseitz@uchicago.edu',
-    packages=['bamboo'])
+    packages=['eln'])
