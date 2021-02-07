@@ -1,7 +1,7 @@
 import matplotlib.pyplot as plt
 import pandas as pd
 
-def add_table(ax, df):
+def add_table(ax, df, hide_ax=True):
 
 	"""
 	Add a DataFrame as a table to the axis
@@ -15,6 +15,11 @@ def add_table(ax, df):
 	cell_text = [];
 	for row in range(len(df)):
 		x = df.iloc[row]
-		x = list(x)[1:] #remove index value
-		cell_text.append(x)
-	ax.table(cellText=cell_text, loc='bottom')
+		cell_text.append(list(x))
+	ax.table(cellText=cell_text, loc='best')
+
+	if hide_ax:
+		ax.spines['top'].set_visible(False)
+		ax.spines['bottom'].set_visible(False)
+		ax.spines['left'].set_visible(False)
+		ax.spines['right'].set_visible(False)
